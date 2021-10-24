@@ -79,6 +79,7 @@ export class MainContainerBind extends Component {
           onPlaying={ e => this.props.setDuration(e.target.duration * 1000) }
           onListen={ e => this.props.updateTime(e.target.currentTime * 1000) }
           onError={ e => console.log('AudioPlayer error', e) }
+          onEnded={this.nextSong}
         />
       )
     }

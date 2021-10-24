@@ -66,6 +66,7 @@ class MusicPlayerBind extends Component {
                 onListen={e => this.props.updateTime(e.timeStamp)}
                 onClickNext={this.nextSong}
                 onClickPrevious={this.previousSong}
+                onEnded={this.nextSong}
                 // style={{position: 'absolute', zIndex: 11}}
                 showSkipControls={true}
                 customVolumeControls={[]}
