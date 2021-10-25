@@ -87,13 +87,13 @@ export default class NavBar extends Component {
                     name="artists"
                     icon={<ImUsers size="3em" />} />
                 <NavBarIcon
-                    title="Playlists"
-                    name="playlists"
-                    icon={<MdPlaylistPlay size="3em" />} />
-                <NavBarIcon
                     title="Genres"
                     name="genres"
                     icon={<GiMusicalNotes size="3em" />} />
+                <NavBarIcon
+                    title="Playlists"
+                    name="playlists"
+                    icon={<MdPlaylistPlay size="3em" />} />
                 {/* <RefreshButton /> */}
             </div>
         )
