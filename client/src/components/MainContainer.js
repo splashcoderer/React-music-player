@@ -8,6 +8,8 @@ import {
 } from '../actions/actions.js';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import { config } from '../config';
+import * as lib from '../music_library.json';
 
 const mapStateToProps = (state, props) => ({
   nowPlaying: state.nowPlaying,
@@ -44,10 +46,11 @@ export class MainContainerBind extends Component {
   }
 
   getMusicLibrary = async () => {
-      const response = await fetch('/getSongs');
-      const body = await response.json();
-      if (response.status !== 200) throw Error(body.message);
-      return body;
+    return lib;
+    const response = await fetch(config.baseUrl + '/getSongs');
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    return body;
   };
 
   nextSong = () => {
@@ -79,6 +82,7 @@ export class MainContainerBind extends Component {
           onPlaying={ e => this.props.setDuration(e.target.duration * 1000) }
           onListen={ e => this.props.updateTime(e.target.currentTime * 1000) }
           onError={ e => console.log('AudioPlayer error', e) }
+          onEnded={this.nextSong}
         />
       )
     }

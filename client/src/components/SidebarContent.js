@@ -6,6 +6,7 @@ import {
     settingsActions,
     dataActions
 } from '../actions/actions.js';
+import { config } from '../config';
 
 const mapStateToProps = (state, props) => ({
     visibleCategory: state.view.visibleCategory,
@@ -121,7 +122,7 @@ export class SidebarContentBind extends Component {
     submitName = (name) => {
         let playlists = Object.keys(this.props.data.playlists);
         if(playlists.indexOf(name) !== -1) return;
-        fetch('/addPlaylist', {
+        fetch(config.baseUrl + '/addPlaylist', {
             method: 'POST',
             body: JSON.stringify({
                 playlistName: name

@@ -9,6 +9,7 @@ import { GrUpdate } from 'react-icons/gr';
 import { MdOutlineLibraryMusic, MdAlbum, MdPlaylistPlay } from 'react-icons/md';
 import { ImUsers } from 'react-icons/im';
 import { GiMusicalNotes } from 'react-icons/gi';
+import { config } from '../config';
 
 const mapStateToPropsCat = (state, props) => ({
     visibleCategory: state.view.visibleCategory
@@ -44,7 +45,7 @@ const mapDispatchToPropsRefresh = {
 
 export class RefreshButtonBind extends Component {
     refreshLibrary = () => {
-        fetch('/refreshData')   
+        fetch(config.baseUrl + '/refreshData')   
         .then(res => {
             console.log('refreshData', res);
             return res.json();

@@ -7,6 +7,7 @@ import {
 } from '../actions/actions.js';
 import '../css/PlaylistSelect.css';
 import { MdCancel } from 'react-icons/md';
+import { config } from '../config';
 
 const mapStateToProps = (state, props) => ({
     hold: state.data.hold,
@@ -25,7 +26,7 @@ export class PlaylistSelectBind extends Component {
     addToPlaylist = (e) => {
         let playlist = e.target.innerHTML;
         let songs = this.props.hold;
-        fetch('/addToPlaylist', {
+        fetch(config.baseUrl + '/addToPlaylist', {
             method: 'POST',
             body: JSON.stringify({
                 playlist,

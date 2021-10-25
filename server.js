@@ -19,7 +19,6 @@ const handler = (req, res) => {
     if (["GET", "POST"].indexOf(req.method) > -1) {
         res.writeHead(200, headers);
     }
-    // res.writeHead(200, headers);
 
     if(req.method.toLowerCase() == 'get') {
         switch(dest) {
