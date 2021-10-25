@@ -4,7 +4,23 @@ const createServer = require('http').createServer;
 const parseSongs = require('./parse.js').parseSongs;
 
 const handler = (req, res) => {
+    console.log('request', req.url, req.method);
     let dest = req.url;
+
+    const headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
+        "Access-Control-Max-Age": 2592000, // 30 days
+    };
+    if (req.method === "OPTIONS") {
+        res.writeHead(204, headers);
+    }
+  
+    if (["GET", "POST"].indexOf(req.method) > -1) {
+        res.writeHead(200, headers);
+    }
+    // res.writeHead(200, headers);
+
     if(req.method.toLowerCase() == 'get') {
         switch(dest) {
             case '/getSongs':
@@ -58,7 +74,7 @@ const fileTypes = {
 
 const getSongs = (req, res) => {
     let dataMap = require("./music_library.json");
-    res.writeHead(200, {"Content-Type":"application/json"});
+    // res.writeHead(200, {"Content-Type":"application/json"});
     res.end(JSON.stringify(dataMap));
 }
 
