@@ -70,8 +70,7 @@ class MusicPlayerBind extends Component {
                 showSkipControls={true}
                 customVolumeControls={[]}
                 customAdditionalControls={[]}
-                // header="head"
-                // footer="footer"
+                onEnded={this.nextSong}
             />
             {/* { this.renderSound() } */}
           </div>
