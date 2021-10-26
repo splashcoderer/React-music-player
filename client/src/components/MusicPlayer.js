@@ -32,6 +32,14 @@ const mapDispatchToProps = {
 
 class MusicPlayerBind extends Component {
 
+    onEnded = () => {
+        this.nextSong();
+    }
+
+    onClickNext = () => {
+        this.nextSong(true);
+    }
+
     previousSong = () => {
         if(this.props.nowPlaying.item === undefined) return;
         if((this.props.nowPlaying.currentTime / 1000) > 2 || !this.props.nowPlaying.activeSong) {
@@ -42,7 +50,7 @@ class MusicPlayerBind extends Component {
         }
     }
 
-    nextSong = () => {
+    nextSong = (isClick) => {
         if(this.props.nowPlaying.item === undefined) return;
         let index = this.props.nowPlaying.activeSong;
         let nextSongIndex = 0;
@@ -51,6 +59,10 @@ class MusicPlayerBind extends Component {
         } else {
             nextSongIndex = getRandomArbitrary(0, this.props.queue.length);
             if (nextSongIndex === index) nextSongIndex = 0;
+        }
+        if (this.props.loop && !isClick) {
+            nextSongIndex = index;
+            this.props.endPlayback();
         }
         if(index === this.props.queue.length - 1) {
             this.props.endPlayback();
@@ -73,14 +85,13 @@ class MusicPlayerBind extends Component {
                 src={window.location.origin + "/music" + musicPath}
                 onPlaying={e => this.props.setDuration(e.timeStamp)}
                 onListen={e => this.props.updateTime(e.timeStamp)}
-                onClickNext={this.nextSong}
+                onClickNext={this.onClickNext}
                 onClickPrevious={this.previousSong}
-                onEnded={this.nextSong}
+                onEnded={this.onEnded}
                 // style={{position: 'absolute', zIndex: 11}}
                 showSkipControls={true}
                 customVolumeControls={[]}
                 customAdditionalControls={[]}
-                onEnded={this.nextSong}
             />
             {/* { this.renderSound() } */}
           </div>
