@@ -9,10 +9,12 @@ import {
     dataActions,
     queueActions
   } from '../actions/actions.js';
+  import { getRandomArbitrary } from '../utils';
 
 const mapStateToProps = (state, props) => ({
     nowPlaying: state.nowPlaying,
     loop: state.settings.loop,
+    shuffle: state.settings.shuffle,
     volume: state.settings.volume,
     data: state.data,
     queue: state.queue
@@ -43,12 +45,19 @@ class MusicPlayerBind extends Component {
     nextSong = () => {
         if(this.props.nowPlaying.item === undefined) return;
         let index = this.props.nowPlaying.activeSong;
+        let nextSongIndex = 0;
+        if (!this.props.shuffle) {
+            nextSongIndex = index + 1;
+        } else {
+            nextSongIndex = getRandomArbitrary(0, this.props.queue.length);
+            if (nextSongIndex === index) nextSongIndex = 0;
+        }
         if(index === this.props.queue.length - 1) {
             this.props.endPlayback();
             this.props.setQueue([]);
         } else {
-            let item = this.props.queue[index + 1];
-            this.props.setPlaying(item, index + 1);
+            let item = this.props.queue[nextSongIndex];
+            this.props.setPlaying(item, nextSongIndex);
         }
     }
 
