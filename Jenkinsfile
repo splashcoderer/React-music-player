@@ -6,9 +6,16 @@ pipeline {
         }
     }
     stages {
+        stage('install') { 
+            steps {
+                sh 'npm install'
+                sh 'cd client'
+                sh 'npm i'
+            }
+        }
         stage('Build') { 
             steps {
-                sh 'npm install' 
+                sh 'npm run build'
             }
         }
     }
