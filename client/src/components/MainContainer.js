@@ -46,7 +46,6 @@ export class MainContainerBind extends Component {
   }
 
   getMusicLibrary = async () => {
-    return lib;
     const response = await fetch(config.baseUrl + '/getSongs');
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
