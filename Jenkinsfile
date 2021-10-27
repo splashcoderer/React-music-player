@@ -9,13 +9,16 @@ pipeline {
         stage('install') { 
             steps {
                 sh 'npm install'
-                sh 'cd client'
-                sh 'npm i'
+                dir('client') {
+                    sh 'npm i'
+                }
             }
         }
         stage('Build') { 
             steps {
-                sh 'npm run build'
+                dir('client') {
+                    sh 'npm run build'
+                }
             }
         }
         stage('Upload') {
