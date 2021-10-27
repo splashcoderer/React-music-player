@@ -19,7 +19,17 @@ pipeline {
             }
         }
         stage('Upload') {
-            ftpPublisher alwaysPublishFromMaster: false, continueOnError: false, failOnError: false, publishers: [[configName: 'pplayer', transfers: [[asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '']], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]]
+            steps {
+                ftpPublisher alwaysPublishFromMaster: false, 
+                    continueOnError: false, 
+                    failOnError: false, 
+                    publishers: [[configName: 'pplayer', 
+                                  transfers: [[asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '']], 
+                                  usePromotionTimestamp: false, 
+                                  useWorkspaceInPromotion: false, 
+                                  verbose: false
+                                 ]]
+            }
         }
     }
 }
