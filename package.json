@@ -7,12 +7,9 @@
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "dependencies": {
-    "audio-loader": "^1.0.3",
-    "audio-play": "^2.2.0",
     "express": "^4.16.3",
     "formidable": "^1.2.1",
     "music-metadata": "^0.11.4",
-    "react-h5-audio-player": "^3.7.2",
     "react-icons": "^4.3.1",
     "shorthash": "0.0.2"
   },

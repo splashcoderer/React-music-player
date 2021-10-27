@@ -9,7 +9,6 @@ import {
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import { config } from '../config';
-import * as lib from '../music_library.json';
 
 const mapStateToProps = (state, props) => ({
   nowPlaying: state.nowPlaying,
@@ -46,7 +45,6 @@ export class MainContainerBind extends Component {
   }
 
   getMusicLibrary = async () => {
-    return lib;
     const response = await fetch(config.baseUrl + '/getSongs');
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
