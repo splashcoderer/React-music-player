@@ -18,6 +18,7 @@ pipeline {
             steps {
                 dir('client') {
                     sh 'npm run build'
+                    sh 'rm -rf node_modules'
                 }
             }
         }
