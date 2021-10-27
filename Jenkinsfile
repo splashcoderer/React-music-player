@@ -22,7 +22,8 @@ pipeline {
             steps {
                 ftpPublisher alwaysPublishFromMaster: false, 
                     continueOnError: false, 
-                    failOnError: false, 
+                    failOnError: false,
+                    paramPublish: null,
                     publishers: [[configName: 'pplayer', 
                                   transfers: [[asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '']], 
                                   usePromotionTimestamp: false, 
