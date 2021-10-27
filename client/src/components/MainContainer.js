@@ -9,7 +9,6 @@ import {
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import { config } from '../config';
-import * as lib from '../music_library.json';
 
 const mapStateToProps = (state, props) => ({
   nowPlaying: state.nowPlaying,
