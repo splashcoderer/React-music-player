@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { 
-    viewActions,
-    dataActions
+    viewActions
 } from '../actions/actions.js';
-import { GrUpdate } from 'react-icons/gr';
 import { MdOutlineLibraryMusic, MdAlbum, MdPlaylistPlay } from 'react-icons/md';
 import { ImUsers } from 'react-icons/im';
 import { GiMusicalNotes } from 'react-icons/gi';
-import { config } from '../config';
 
 const mapStateToPropsCat = (state, props) => ({
     visibleCategory: state.view.visibleCategory
@@ -37,38 +34,6 @@ export const NavBarIcon = connect(
     mapStateToPropsCat,
     mapDispatchToPropsCat
 )(NavBarIconBind);
-
-const mapDispatchToPropsRefresh = {
-    updateData: dataActions.updateData,
-    resetView: viewActions.resetView
-}
-
-export class RefreshButtonBind extends Component {
-    refreshLibrary = () => {
-        fetch(config.baseUrl + '/refreshData')   
-        .then(res => {
-            console.log('refreshData', res);
-            return res.json();
-        })
-        .catch(error => console.error('Error:', error))
-        .then(response => {
-            this.props.resetView();
-            //this.props.updateData(response);
-        });
-    }
-    render(){
-        return(
-            <div className="refresh-outer" onClick={this.refreshLibrary}>
-                <GrUpdate size="2em" title="Refresh Music Library"/>
-            </div>
-        )
-    }
-}
-
-export const RefreshButton = connect(
-    null,
-    mapDispatchToPropsRefresh
-)(RefreshButtonBind)
 
 export default class NavBar extends Component {
     render() {

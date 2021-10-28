@@ -1,6 +1,45 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { 
+    viewActions,
+    dataActions
+} from '../actions/actions.js';
+import { GrUpdate } from 'react-icons/gr';
+import { config } from '../config';
+
+const mapDispatchToPropsRefresh = {
+    updateData: dataActions.updateData,
+    resetView: viewActions.resetView
+}
+
+export class RefreshButtonBind extends Component {
+    refreshLibrary = () => {
+        fetch(config.baseUrl + '/refreshData')
+        .then(res => {
+            console.log('refreshData', res);
+            // return res.json();
+        })
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+            // this.props.resetView();
+            //this.props.updateData(response);
+        });
+    }
+    render(){
+        return(
+            <div className="refresh-lib-button" onClick={this.refreshLibrary}>
+                <GrUpdate size="4em" title="Refresh Music Library"/>
+            </div>
+        )
+    }
+}
+
+export const RefreshButton = connect(
+    null,
+    mapDispatchToPropsRefresh
+)(RefreshButtonBind)
+
 const mapStateToProps = (state, props) => ({
     queue: state.queue,
     activeSong: state.nowPlaying.activeSong,
@@ -29,6 +68,7 @@ class SongInfoBind extends Component {
                     <div className="song-artist">
                         {item.artist}
                     </div>
+                    {this.props.activeSong === undefined && <RefreshButton />}
                 </div>
             </div>
         )
