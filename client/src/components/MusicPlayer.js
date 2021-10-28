@@ -78,7 +78,7 @@ class MusicPlayerBind extends Component {
         let musicPath = musicItem && musicItem.path;
         musicPath = encodeURI(musicPath);
         return(
-          <div className="audio_player">
+          <div className={ "audio_player" + (this.props.nowPlaying.item > '' ? ' playing' : '')}>
             {/* <MainContent /> */}
             <AudioPlayer
                 autoPlay
