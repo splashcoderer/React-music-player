@@ -92,15 +92,14 @@ const refreshData = (req, res) => {
         }
         const playlists = require('./music_library.json').playlists;
         parseSongs("./client/public/music/", (err, result) => {
+            // console.log('parseSongs', err, result);
             if(err) throw err;
             let dataMap = result;
             dataMap["playlists"] = playlists;
             fs.writeFile("./music_library.json", JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
-                console.log("hello world");
-                console.log(dataMap);
+                console.log('music_library', dataMap);
                 res.writeHead(200, {"Content-Type":"application/json"});
-                //res.end(JSON.stringify(dataMap));
-                res.end("hello");
+                res.end(JSON.stringify(dataMap));
             });
         });
     } else {
