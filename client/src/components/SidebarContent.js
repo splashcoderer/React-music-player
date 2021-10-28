@@ -143,7 +143,7 @@ export class SidebarContentBind extends Component {
                 <div className="sidebar-background"></div>
                 <SidebarContentItem
                     name="songs"
-                    content="Tracks"
+                    content="Folders"
                     visible={this.props.visibleCategory}
                     data={this.props.data.songs}
                     onActiveIndexChange={this.onActiveIndexChange}/>
@@ -160,18 +160,18 @@ export class SidebarContentBind extends Component {
                     data={this.props.data.artists} 
                     onActiveIndexChange={this.onActiveIndexChange}/>
                 <SidebarContentItem
+                    name="genres"
+                    content="Genres"
+                    visible={this.props.visibleCategory}
+                    data={this.props.data.genres} 
+                    onActiveIndexChange={this.onActiveIndexChange}/>
+                <SidebarContentItem
                     name="playlists"
                     content="Playlists"
                     visible={this.props.visibleCategory}
                     data={this.props.data.playlists} 
                     onActiveIndexChange={this.onActiveIndexChange}
                     submitName={this.submitName}/>
-                <SidebarContentItem
-                    name="genres"
-                    content="Genres"
-                    visible={this.props.visibleCategory}
-                    data={this.props.data.genres} 
-                    onActiveIndexChange={this.onActiveIndexChange}/>   
             </div>
         )
     }
