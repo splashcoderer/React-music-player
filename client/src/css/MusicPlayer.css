@@ -6,3 +6,11 @@
 .rhap_time {
     color: white !important;
 }
+
+.audio_player.playing svg {
+    color: white;
+}
+
+.audio_player.playing .rhap_progress-indicator {
+    background-color: white;
+}
