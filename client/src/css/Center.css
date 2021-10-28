@@ -75,7 +75,6 @@
   position:absolute;
   left:0;
   top:0;
-  height:1250px;
   width: 25vw;
   line-height: 250px;
   text-align:left;
@@ -269,7 +268,7 @@
   overflow-x: hidden;
 }
 .music-item-more {
-  font-size: 12px;;
+  font-size: 14px;;
 }
 
 .music-item-active {
