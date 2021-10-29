@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import '../css/SuccessMessage.css';
+import '../css/SuccessMessage.scss';
 import { MdCheck } from 'react-icons/md';
 
 const mapStateToProps = (state, props) => ({

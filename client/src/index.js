@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import musicStore from './store.js'
 import MainContainer from './components/MainContainer.js'
 import registerServiceWorker from './registerServiceWorker.js';
-import './css/index.css';
+import './css/index.scss';
 
 render(
     <Provider store={musicStore}>

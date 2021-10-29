@@ -5,7 +5,7 @@ import {
     dataActions,
     viewActions
 } from '../actions/actions.js';
-import '../css/PlaylistSelect.css';
+import '../css/PlaylistSelect.scss';
 import { MdCancel } from 'react-icons/md';
 import { config } from '../config';
 

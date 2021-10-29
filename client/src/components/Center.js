@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import NavBar from './NavBar.js';
 import MusicItem from './MusicItem.js';
 import IndexPanel from './IndexPanel.js';
-import '../css/Center.css';
+import '../css/Center.scss';
 import { MdQueueMusic } from 'react-icons/md';
 
 const mapStateToProps = (state, props) => ({

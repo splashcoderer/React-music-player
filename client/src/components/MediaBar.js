@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import '../css/MediaBar.css';
+import '../css/MediaBar.scss';
 import SongInfo from './SongInfo.js';
 import MediaOptions from './MediaOptions.js';
 import MusicPlayer from './MusicPlayer';
