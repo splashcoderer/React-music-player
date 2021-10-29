@@ -3,6 +3,8 @@ const formidable = require('formidable');
 const createServer = require('http').createServer;
 const parseSongs = require('./parse.js').parseSongs;
 
+const webSiteDir = './client/build';
+
 const handler = (req, res) => {
     console.log('request', req.url, req.method);
     let dest = req.url;
@@ -72,7 +74,14 @@ const fileTypes = {
 }
 
 const getSongs = (req, res) => {
-    let dataMap = require("./music_library.json");
+    let dataMap = fs.existsSync('./music_library.json') ? require("./music_library.json") : {
+        "songs":{},
+        "albums":{},
+        "artists":{},
+        "playlists":{},
+        "genres":{},
+        "all":{}
+    };
     // res.writeHead(200, {"Content-Type":"application/json"});
     res.end(JSON.stringify(dataMap));
 }
@@ -86,18 +95,19 @@ const getWallpapers = (req, res) => {
 }
 
 const refreshData = (req, res) => {
-    if (fs.existsSync("./client/public/music")){
-        if (!fs.existsSync("./client/public/covers")){
-            fs.mkdirSync("./client/public/covers");
+    if (fs.existsSync(webSiteDir + "/music")){
+        if (!fs.existsSync(webSiteDir + "/covers")){
+            fs.mkdirSync(webSiteDir + "/covers");
         }
-        const playlists = require('./music_library.json').playlists;
-        parseSongs("./client/public/music/", (err, result) => {
+        const playlists = fs.existsSync('./music_library.json') ? require('./music_library.json').playlists : [];
+        console.log('parseSongs from ', webSiteDir + "/music/");
+        parseSongs(webSiteDir + "/music/", (err, result) => {
             // console.log('parseSongs', err, result);
             if(err) throw err;
             let dataMap = result;
             dataMap["playlists"] = playlists;
             fs.writeFile("./music_library.json", JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
-                console.log('music_library', dataMap);
+                // console.log('music_library', dataMap);
                 res.writeHead(200, {"Content-Type":"application/json"});
                 res.end(JSON.stringify(dataMap));
             });
@@ -183,8 +193,6 @@ const editPlaylistName = (req, res) => {
         });
     });
 }
-
-// require('./refresh.js');
 
 createServer(handler).listen(5000);
 

@@ -5,6 +5,8 @@ const sh = require("shorthash");
 const mm = require("music-metadata");
 // const util = require("util");
 
+const webSiteDir = 'client/build';
+
 function translit(word){
 	var answer = '';
 	var converter = {
@@ -48,7 +50,7 @@ const parseSongs = (dir, done) => {
     // console.log('parseSongs() dir=', dir);
     fs.readdir(dir, (err, list) => {
         if (err) return done(err);
-        // console.log('list', list);
+        console.log('list', list);
         var pending = list.length;
         if (!pending) return done(null, results);
 
@@ -101,7 +103,7 @@ const parseSongs = (dir, done) => {
                                     entry.title = tags.title;
                                 }
 
-                                newFileName = fileName + ext;;
+                                newFileName = fileName + ext;
                                 // let newFileName = translit(fileName);
                                 // newFileName = newFileName.replace(/\s+/g,'-') + ext;
                                 // newFileName = fileName.replace(/[^a-zA-Z0-9\-.]/g,'-') + ext;
@@ -114,8 +116,8 @@ const parseSongs = (dir, done) => {
                                     coverName = coverName.replace(/\s+/g,'-');
                                     coverName = translit(coverName);//coverName.replace(/[^a-zA-Z0-9\-.]/g,'-');
                                     let coverExt = tags.picture[0].format;
-                                    let fileName = "/" + coverName + "." + coverExt;//"\\" + coverName + "." + coverExt;
-                                    let coverPath = "client/public/covers" + fileName;// "client\\public\\covers" + fileName;
+                                    let fileName = "/" + coverName + "." + coverExt;
+                                    let coverPath = webSiteDir + "/covers" + fileName;
                                     fs.writeFile(
                                         coverPath, 
                                         binaryData, 
@@ -129,7 +131,7 @@ const parseSongs = (dir, done) => {
                                 }
 
                                 let musicPath = path.relative(process.cwd(), dir + "/" + newFileName);
-                                musicPath = musicPath.split('client/public/music')[1];
+                                musicPath = musicPath.split(webSiteDir + '/music')[1];
                                 entry.path = musicPath; //path.relative(process.cwd(), dir + "/" + newFileName);
                                     
                                 entry.artist = (tags.artist === undefined) ? "None" : tags.artist;
