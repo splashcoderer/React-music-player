@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import '../css/MusicPlayer.css';
+import '../css/MusicPlayer.scss';
 import AudioPlayer from 'react-h5-audio-player';
 
 import {
