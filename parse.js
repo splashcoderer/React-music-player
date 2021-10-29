@@ -134,8 +134,8 @@ const parseSongs = (dir, done) => {
                                 musicPath = musicPath.split(webSiteDir + '/music')[1];
                                 entry.path = musicPath; //path.relative(process.cwd(), dir + "/" + newFileName);
                                     
-                                entry.artist = (tags.artist === undefined) ? "None" : tags.artist;
-                                entry.album = (tags.album === undefined) ? "None" : tags.album;
+                                entry.artist = (tags.artist === undefined) ? "" : tags.artist;
+                                entry.album = (tags.album === undefined) ? "" : tags.album;
                                 entry.genre = (tags.genre === undefined) ? [] : tags.genre;
 
                                 const id = sh.unique(musicPath) // Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
