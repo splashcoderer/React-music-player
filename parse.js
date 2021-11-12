@@ -50,7 +50,7 @@ const parseSongs = (dir, done) => {
     // console.log('parseSongs() dir=', dir);
     fs.readdir(dir, (err, list) => {
         if (err) return done(err);
-        console.log('list', list);
+        // console.log('list', list);
         var pending = list.length;
         if (!pending) return done(null, results);
 
@@ -137,6 +137,10 @@ const parseSongs = (dir, done) => {
                                 entry.artist = (tags.artist === undefined) ? "" : tags.artist;
                                 entry.album = (tags.album === undefined) ? "" : tags.album;
                                 entry.genre = (tags.genre === undefined) ? [] : tags.genre;
+
+                                chordsFileName = dir + '/' + newFileName.replace('.mp3', '.chords.txt');
+                                entry.chords = fs.existsSync(chordsFileName) ? fs.readFileSync(chordsFileName, {encoding:'utf8', flag:'r'}) : '';
+                                // if (fs.existsSync(chordsFileName)) console.log('readFileSync', fs.readFileSync(chordsFileName, {encoding:'utf8', flag:'r'}));
 
                                 const id = sh.unique(musicPath) // Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
                                 results["all"][id] = entry;
