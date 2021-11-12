@@ -3,4 +3,5 @@
     position: absolute;
     width: calc(100vw);
     top: -20px;
+    text-align: right;
 }
