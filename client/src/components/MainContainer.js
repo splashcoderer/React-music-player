@@ -38,6 +38,7 @@ export class MainContainerBind extends Component {
             data[key] = res[key]
         }
         this.props.updateData(data);
+        // console.log('data', data);
       })
       .catch(err =>  {
           console.log(err)

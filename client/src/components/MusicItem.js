@@ -58,7 +58,7 @@ export class MusicItemBind extends Component {
     let index = this.props.index;
     if(!this.props.queueVisible){
       let list = this.getSongList();
-      this.props.setQueue(list);   // add playing song to queue (that's weird) and scroll list to top (shit)
+      this.props.setQueue(list);   // add playing song with all from this folder to queue (that's weird)
       if(this.props.shuffle) index = 0;
     }
     this.props.setPlaying(this.props.id, index);

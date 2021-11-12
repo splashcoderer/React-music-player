@@ -1,0 +1,6 @@
+.song-chords {
+    color: white;
+    position: absolute;
+    width: calc(100vw);
+    top: -20px;
+}

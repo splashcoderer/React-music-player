@@ -108,7 +108,7 @@ const refreshData = (req, res) => {
             dataMap["playlists"] = playlists;
             fs.writeFile("./music_library.json", JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
                 // console.log('music_library', dataMap);
-                res.writeHead(200, {"Content-Type":"application/json"});
+                // res.writeHead(200, {"Content-Type":"application/json"});
                 res.end(JSON.stringify(dataMap));
             });
         });

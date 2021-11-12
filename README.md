@@ -6,3 +6,6 @@ Music player made on React to play your local files in your network like on DLNA
 
 # Install
 - npm i
+
+# Start
+- npm run dev

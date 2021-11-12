@@ -7,6 +7,7 @@ import {
 } from '../actions/actions.js';
 import { GrUpdate } from 'react-icons/gr';
 import { config } from '../config';
+import '../css/SongInfo.css';
 
 const mapDispatchToPropsRefresh = {
     updateData: dataActions.updateData,
@@ -14,11 +15,19 @@ const mapDispatchToPropsRefresh = {
 }
 
 export class RefreshButtonBind extends Component {
+    
+    componentDidUpdate() {
+        this.hideRefreshButton = true;
+        // console.log('did', this.hideRefreshButton);
+    }
+
     refreshLibrary = () => {
+        this.hideRefreshButton = true;
         fetch(config.baseUrl + '/refreshData')
         .then(res => {
-            console.log('refreshData', res);
+            // console.log('refreshData', res);
             // return res.json();
+            setTimeout(() => window.location.reload(), 1000);
         })
         .catch(error => console.error('Error:', error))
         .then(response => {
@@ -26,10 +35,13 @@ export class RefreshButtonBind extends Component {
             //this.props.updateData(response);
         });
     }
-    render(){
+
+    // getShowRefreshButton = () => this.showRefreshButton;
+
+    render() {
         return(
             <div className="refresh-lib-button" onClick={this.refreshLibrary}>
-                <GrUpdate size="4em" title="Refresh Music Library"/>
+                {!this.hideRefreshButton && <GrUpdate size="4em" title="Refresh Music Library"/>}
             </div>
         )
     }
@@ -58,6 +70,9 @@ class SongInfoBind extends Component {
         }
         return(
             <div className="song-info">
+                <div className="song-chords">
+                    {item.chords}
+                </div>
                 <div className="song-album-cover">
                     <img src={coverPath} alt="" />
                 </div>
