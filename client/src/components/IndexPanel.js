@@ -8,7 +8,7 @@ import {
     viewActions
 } from '../actions/actions.js';
 import { shuffle } from '../tools.js';
-import { MdCheck } from 'react-icons/md';
+import { MdCheck, MdPlayArrow } from 'react-icons/md';
 
 const mapStateToProps = (state, props) => ({
     activeIndex: state.view.activeIndex,
@@ -152,13 +152,13 @@ export class IndexPanelBind extends Component {
                         id="panel-addtoplaylist" 
                         className="panel-control panel-option"
                         onClick={this.addToPlaylist} >
-                        ADD TO PLAYLIST
+                        TO PLAYLIST
                     </div>
                     <div 
                         id="panel-addtoqueue" 
                         className="panel-control panel-option"
                         onClick={this.addToQueue} >
-                        ADD TO QUEUE
+                        TO QUEUE
                     </div>
                     <div 
                         id="panel-playnext" 
@@ -170,7 +170,8 @@ export class IndexPanelBind extends Component {
                         className="panel-control"
                         onClick={this.play}>
                         <span className="panel-play">
-                            PLAY
+                            {/* PLAY */}
+                            <MdPlayArrow></MdPlayArrow>
                         </span>
                     </div>
                 </div>

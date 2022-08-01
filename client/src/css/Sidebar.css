@@ -26,8 +26,10 @@
     color: white;
     position: absolute;
     z-index: 1;
-    left: 12px;
+    left: 2px;
     opacity: 0.7;
+    font-size: 14px;
+    font-stretch: condensed;
 }
 
 .navbar-icon {
@@ -145,30 +147,30 @@
 .sidebar-header {
     position:relative;
     float:left;
-    height:10vh;
-    width:100%;
-    margin:0;
-    padding:0;
+    height: 7vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     -webkit-box-shadow: 0px 10px 74px -17px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 10px 74px -17px rgba(0,0,0,0.75);
     box-shadow: 0px 10px 74px -17px rgba(0,0,0,0.75);
-    background:linear-gradient(rgb(27, 38, 92), rgb(22, 44, 78));
+    background: linear-gradient(rgb(27, 38, 92), rgb(22, 44, 78));
 }
 
 .sidebar-header span {
-    position:absolute;
-    height:10vh;
-    width:100%;
-    top:0;
-    left:50%;
-    transform:translate(-50%,0);
-    margin:0;
-    padding-left:30px;
-    line-height:12vh;
-    text-align:left;
-    font-size:18px;
-    color:rgba(255, 255, 255, 0.829);
-    font-weight:bold;
+    position: absolute;
+    height: 7vh;
+    width: 100%;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,0);
+    margin: 0;
+    padding-left: 10px;
+    line-height: 10vh;
+    text-align: left;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.829);
+    font-weight: bold;
 }
 
 .new-playlist-toggle {
@@ -236,28 +238,28 @@
 }
 
 .sidebar-list {
-    position:relative;
-    float:left;
-    height:80vh;
-    width:100%;
-    margin:0;
-    padding:0;
-    padding-right:50px;
-    overflow-y:scroll;
-    transition:height .1s ease-in-out;
+    position: relative;
+    float: left;
+    height: 81vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    padding-right: 50px;
+    overflow-y: scroll;
+    transition: height .1s ease-in-out;
 }
 
 .new-playlist-form-visible {
-    display:block;
+    display: block;
 }
 
 .sidebar-list-short {
-    height:70vh;
+    height: 70vh;
 }
 
 .sidebar-list ul {
-    list-style:none;
-    padding-left:30px;
+    list-style: none;
+    padding-left: 10px;
     list-style-type: none;
 }
 
@@ -266,7 +268,7 @@
     margin: 15px 0;
     display: block;
     text-align: left;
-    line-height: 30px;
+    line-height: 22px;
     font-size: 20px;
     color: rgb(254, 253, 255);
     cursor: pointer;

@@ -1,7 +1,9 @@
 .song-chords {
     color: white;
     position: absolute;
+    display: inline;
     width: calc(100vw);
     top: -20px;
-    text-align: right;
+    text-align: center;
+    background-color: rgb(38, 73, 124);
 }

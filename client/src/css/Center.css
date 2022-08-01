@@ -54,35 +54,35 @@
 .index-inner {
   position: absolute;
   top: 5%;
-  left: 50%;
+  left: 53%;
   transform: translate(-50%,0);
-  width: 60vw;
+  width: 67vw;
   overflow-x: hidden;
 }
 
 .panel {
-  position:relative;
-  height:150px;
-  width:60vw;
-  float:left;
-  margin:0;
-  padding:0;
-  color:#fff;
-  border-bottom:1px solid #fff;
+  position: relative;
+  height: 100px;
+  width: 67vw;
+  float: left;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  border-bottom: 1px solid #fff;
 }
 
 .panel-title {
-  position:absolute;
-  left:0;
-  top:0;
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 25vw;
-  line-height: 250px;
-  text-align:left;
-  margin:0;
-  padding:0;;
-  font-size:32px;
-  font-weight:bold;   
-  text-overflow:ellipsis;
+  line-height: 150px;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  font-size: 32px;
+  font-weight: bold;   
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -145,51 +145,51 @@
 }
 
 .panel-controls {
-  position:absolute;
-  right:0;
-  top:0;
-  height:150px;
-  width:50vw;
-  margin:0;
-  padding:0;
-  overflow:hidden;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 150px;
+  width: 67vw;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 .panel-control-hidden {
-  display:none;
+  display: none;
 }
 
 .panel-control {
-  position:relative;
-  float:right;
-  height:150px;
-  text-align:right;
-  line-height:150px;
-  margin:0;
-  padding-left:20px;
-  font-size:18px;
-  color:#fff;
-  font-weight:bold;
-  cursor:pointer;
-  transition:all .05s ease-in-out;
+  position: relative;
+  float: right;
+  height: 30px;
+  text-align: right;
+  line-height: 70px;
+  margin: 0;
+  padding-left: 2px;
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all .05s ease-in-out;
 }
 
 .panel-control:hover {
-  color:rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .panel-play {
   position:absolute;
-  top:50%;
-  right:0;
-  transform:translate(0,-50%);
-  height:40px;
-  line-height:40px;
-  width:90px;
-  border:1px solid #fff;
-  border-radius:10px;
-  text-align:center;
-  cursor:pointer;
+  top: 74px;
+  left: 37px;
+  transform: translate(0,-50%);
+  height: 40px;
+  line-height: 44px;
+  width: 40px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
 }
 
 .panel-play:hover {
@@ -198,25 +198,25 @@
 }
 
 .music-item-key {
-  position:relative;
-  height:50px;
-  width:60vw;
-  margin:0;
-  padding:20px 0 0 0;
-  color:rgba(255, 255, 255, 0.452);
-  border-bottom:1px solid rgba(255, 255, 255, 0.356);
-  float:left;
+  position: relative;
+  height: 50px;
+  width: 67vw;
+  margin: 0;
+  padding: 20px 0 0 0;
+  color: rgba(255, 255, 255, 0.452);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.356);
+  float: left;
 }
 
 .music-list {
-  position:relative;
-  width:60vw;
-  height:calc(90vh - 220px);
-  overflow-y:scroll;
-  float:left;
-  margin:0;
-  padding:0;
-  padding-right:20px;
+  position: relative;
+  width: 67vw;
+  height: calc(90vh - 154px);
+  overflow-y: scroll;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 20px;
 }
 
 .music-item {
@@ -224,7 +224,7 @@
   justify-content: space-between;
   align-items: center;
   height: 60px;
-  width: 60vw;
+  width: 67vw;
   border-bottom: 1px solid rgba(255, 255, 255, 0.356);
 }
 
@@ -376,4 +376,12 @@ div.download a {
   height:25px;
   width:25px;
   cursor:pointer;
+}
+
+#panel-addtoplaylist {
+  float: left;
+}
+
+#panel-playnext {
+  display: none;
 }
