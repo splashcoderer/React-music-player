@@ -7,6 +7,7 @@ import {
     dataActions
 } from '../actions/actions.js';
 import { config } from '../config';
+// import { BrowserRouter } from 'react-router'
 
 const mapStateToProps = (state, props) => ({
     visibleCategory: state.view.visibleCategory,
@@ -33,6 +34,9 @@ export class SidebarContentItem extends Component {
     changeActiveIndex = (e) => {
         let index = e.target.innerHTML;
         this.props.onActiveIndexChange(index);
+        console.log(e);
+        // BrowserRouter.push('/some/path');
+        // this.props.history.push('/test');
     }
 
     listItems = (category) => {
@@ -87,7 +91,7 @@ export class SidebarContentItem extends Component {
                 id={"sidebar-" + this.props.name} 
                 className={classNames} >
 
-                <div className="title">Private Player</div>
+                <div className="title">Private Player { config.version }</div>
 
                 <div className="sidebar-header">    
                     <span>{this.props.content}</span>
