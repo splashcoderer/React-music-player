@@ -34,7 +34,7 @@ export class SidebarContentItem extends Component {
     changeActiveIndex = (e) => {
         let index = e.target.innerHTML;
         this.props.onActiveIndexChange(index);
-        console.log(e);
+        // console.log(e);
         // BrowserRouter.push('/some/path');
         // this.props.history.push('/test');
     }
@@ -42,6 +42,7 @@ export class SidebarContentItem extends Component {
     listItems = (category) => {
         let keys = Object.keys(category);
         if(!keys.length) return;
+        keys.sort();
         return (
             keys.map(item => 
                 <li key={item} onClick={this.changeActiveIndex}>{item}</li>
