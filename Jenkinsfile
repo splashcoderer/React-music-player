@@ -56,11 +56,12 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            mail to: 'dir@rhrf.ru',
-            subject: 'PPlayer Build',
-            body: 'PPlayer Build done'
-        }
-    }
+    // post {
+    //     always {
+    //         mail to: 'dir@rhrf.ru',
+    //         subject: 'PPlayer Build',
+    //         body: 'PPlayer Build done'
+    //         // recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+    //     }
+    // }
 }
