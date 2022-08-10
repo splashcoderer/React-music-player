@@ -56,4 +56,12 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            mail to: 'dir@rhrf.ru',
+            subject: 'PPlayer Build',
+            emailext body: 'PPlayer Build done',
+            recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+        }
+    }
 }
