@@ -3,11 +3,12 @@
   "version": "0.1.11",
   "private": true,
   "dependencies": {
-    "react": "^16.3.2",
+    "react": "^16.14.0",
     "react-dom": "^16.3.2",
     "react-h5-audio-player": "^3.7.2",
     "react-icons": "^4.4.0",
     "react-redux": "^5.0.7",
+    "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^2.0.1",
     "react-sound": "^1.2.0",
