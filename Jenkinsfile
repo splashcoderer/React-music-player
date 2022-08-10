@@ -61,7 +61,7 @@ pipeline {
             mail to: 'dir@rhrf.ru',
             subject: 'PPlayer Build',
             body: 'PPlayer Build done',
-            recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+            // recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
         }
     }
 }
