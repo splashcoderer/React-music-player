@@ -60,8 +60,7 @@ pipeline {
         always {
             mail to: 'dir@rhrf.ru',
             subject: 'PPlayer Build',
-            body: 'PPlayer Build done',
-            // recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+            body: 'PPlayer Build done'
         }
     }
 }
