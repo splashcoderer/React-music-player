@@ -9,8 +9,10 @@ import {
   viewActions
 } from '../actions/actions.js';
 import { shuffle } from '../tools.js';
-import { MdCancel, MdMoreHoriz } from 'react-icons/md';
+import { MdCancel, MdMoreHoriz, MdContentCopy } from 'react-icons/md';
+import { FiShare } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+// import { Share } from '@capacitor/share';
 
 const mapStateToProps = (state, props) => ({
   queueVisible: state.settings.queue,
@@ -36,6 +38,7 @@ const mapDispatchToProps = {
   togglePlaylistSelectVisible: viewActions.togglePlaylistSelectVisible,
   seekTo: playbackActions.seekTo,
   changeLocation: viewActions.changeLocation,
+  toggleSuccessModal: viewActions.toggleSuccessModal
 }
 
 export class MusicItemBind extends Component {
@@ -71,8 +74,32 @@ export class MusicItemBind extends Component {
   }
 
   shareSong = e => {
-    console.log(this.props.id, decodeURI(document.location.href.split('/').slice(0, -1).join('/')), this.props.data.all[this.props.id].title);
-    navigator.clipboard.writeText(decodeURI(document.location.href.split('/').slice(0, -1).join('/')) + '/' + this.props.data.all[this.props.id].title);
+    // Share.share({
+    //   title: 'See cool stuff',
+    //   text: 'Really awesome thing you need to see right meow',
+    //   url: 'http://ionicframework.com/',
+    //   dialogTitle: 'Share with buddies',
+    // });
+    if (navigator.share) {
+      navigator.share({
+        url: decodeURI(document.location.href.split('/').slice(0, -1).join('/')) + '/' + this.props.data.all[this.props.id].title,
+        text: this.props.data.all[this.props.id].title,
+        title: this.props.data.all[this.props.id].title
+      });
+    } else {
+      // this.props.toggleSuccessModal();
+    }
+    this.toggleOptionView(e);
+    e.stopPropagation();
+  }
+
+  copyLink = e => {
+    // console.log(this.props.id, decodeURI(document.location.href.split('/').slice(0, -1).join('/')), this.props.data.all[this.props.id].title);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(decodeURI(document.location.href.split('/').slice(0, -1).join('/')) + '/' + this.props.data.all[this.props.id].title);
+    } else {
+      // this.props.toggleSuccessModal();
+    }
     this.toggleOptionView(e);
     e.stopPropagation();
   }
@@ -186,11 +213,6 @@ export class MusicItemBind extends Component {
             <div className="options-container-inner">
 
               <div className="options-list options-list-index">
-              <div 
-                  className="add-to-playlist"
-                  onClick={this.shareSong}>
-                    Share Song
-                </div>
                 <div 
                   className="add-to-playlist"
                   onClick={this.addToPlaylist}>
@@ -223,6 +245,18 @@ export class MusicItemBind extends Component {
                       Remove Item
                     </div>
                 }
+                { navigator && <div 
+                  className="share-song"
+                  onClick={this.shareSong}
+                >
+                  <FiShare></FiShare> Share Song
+                </div>}
+                { navigator && <div 
+                  className="copy-link"
+                  onClick={this.copyLink}
+                >
+                  <MdContentCopy></MdContentCopy> Copy Link
+                </div>}
               </div>
             </div>
           </div>
