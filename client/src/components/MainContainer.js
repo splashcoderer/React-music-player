@@ -4,7 +4,8 @@ import MainContent from './MainContent.js';
 import {
   playbackActions,
   dataActions,
-  queueActions
+  queueActions,
+  viewActions
 } from '../actions/actions.js';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
@@ -15,7 +16,8 @@ const mapStateToProps = (state, props) => ({
   loop: state.settings.loop,
   volume: state.settings.volume,
   data: state.data,
-  queue: state.queue
+  queue: state.queue,
+  location: state.view.location
 })
 
 const mapDispatchToProps = {
@@ -25,12 +27,16 @@ const mapDispatchToProps = {
   setPlaying: playbackActions.setPlaying,
   endPlayback: playbackActions.endPlayback,
   seekTo: playbackActions.seekTo,
-  setQueue: queueActions.setQueue
+  setQueue: queueActions.setQueue,
+  changeLocation: viewActions.changeLocation
 }
 
 export class MainContainerBind extends Component {
   
   componentDidMount() {
+    // console.log('pathname', this.props.history.location.pathname.slice(1));
+    this.props.changeLocation(this.props.history.location.pathname.slice(1) || 'songs');
+
     this.getMusicLibrary()
       .then(res => {
         let data = {};
@@ -38,7 +44,7 @@ export class MainContainerBind extends Component {
             data[key] = res[key]
         }
         this.props.updateData(data);
-        // console.log('data', data);
+        // console.log('data', this.props.data);
       })
       .catch(err =>  {
           console.log(err)

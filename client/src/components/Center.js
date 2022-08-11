@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import {
+  playbackActions,
+  queueActions,
+  viewActions
+} from '../actions/actions.js';
+
 import NavBar from './NavBar.js';
 import MusicItem from './MusicItem.js';
 import IndexPanel from './IndexPanel.js';
@@ -12,17 +18,48 @@ const mapStateToProps = (state, props) => ({
   queue: state.queue,
   data: state.data,
   activeIndex: state.view.activeIndex,
-  activeCategory: state.view.activeCategory
+  activeCategory: state.view.activeCategory,
+  location: state.view.location
 })
+
+const mapDispatchToProps = {
+  setPlaying: playbackActions.setPlaying,
+  setActive: playbackActions.setActive,
+  setQueue: queueActions.setQueue,
+  seekTo: playbackActions.seekTo,
+  changeLocation: viewActions.changeLocation,
+}
 
 export class CenterBind extends Component {
   
-  componentDidUpdate(){
+  componentDidMount() {
+    setTimeout(() => {
+      const list = this.props.queueVisible ? this.props.queue : this.props.data[this.props.activeCategory][this.props.activeIndex];
+      // console.log('list', list, this.props.data);
+      // this.props.setPlaying('Z2q6R6E', 7);
+
+      const url = this.props.location.split('/');
+      if (list && url[2]) {
+        let item2play = '';
+        for (const key in this.props.data.all) {
+          if (this.props.data.all[key].title === decodeURI(url[2])) item2play = key;
+        }
+
+        const item2playIndex = list.findIndex(e => e === item2play);
+        
+        setTimeout(() => {
+          this.props.setQueue(list);
+          this.props.setPlaying(item2play, item2playIndex);
+          // this.props.seekTo(100);
+          // this.props.setActive();
+        }, 10);
+      }
+    }, 1000);
   }
 
   render() {
     let list = [];
-    if(this.props.activeIndex) {
+    if (this.props.activeIndex) {
       list = this.props.queueVisible ?
       this.props.queue :
       this.props.data[this.props.activeCategory][this.props.activeIndex];
@@ -59,7 +96,8 @@ export class CenterBind extends Component {
 }
 
 const Center = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(CenterBind);
 
 export { Center as default }

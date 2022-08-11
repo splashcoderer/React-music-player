@@ -10,6 +10,7 @@ import {
 } from '../actions/actions.js';
 import { shuffle } from '../tools.js';
 import { MdCancel, MdMoreHoriz } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 
 const mapStateToProps = (state, props) => ({
   queueVisible: state.settings.queue,
@@ -18,7 +19,8 @@ const mapStateToProps = (state, props) => ({
   activeCategory: state.view.activeCategory,
   activeIndex: state.view.activeIndex,
   activeSong: state.nowPlaying.activeSong,
-  shuffle: state.settings.shuffle
+  shuffle: state.settings.shuffle,
+  location: state.view.location
 })
 
 const mapDispatchToProps = {
@@ -31,7 +33,9 @@ const mapDispatchToProps = {
   addToUpnext: queueActions.addToUpnext,
   setHold: dataActions.setHold,
   removeFromPlaylist: playlistActions.removeFromPlaylist,
-  togglePlaylistSelectVisible: viewActions.togglePlaylistSelectVisible
+  togglePlaylistSelectVisible: viewActions.togglePlaylistSelectVisible,
+  seekTo: playbackActions.seekTo,
+  changeLocation: viewActions.changeLocation,
 }
 
 export class MusicItemBind extends Component {
@@ -48,7 +52,7 @@ export class MusicItemBind extends Component {
   getSongList = () => {
     let list = this.props.data[this.props.activeCategory][this.props.activeIndex];
     if(this.props.shuffle) {
-      list  = shuffle(list);
+      list = shuffle(list);
       list.splice(0,0,this.props.id);
     }
     return list;
@@ -61,7 +65,16 @@ export class MusicItemBind extends Component {
       this.props.setQueue(list);   // add playing song with all from this folder to queue (that's weird)
       if(this.props.shuffle) index = 0;
     }
+    // console.log('playItem', this.props.id, index, this.props.data.all[this.props.id], this.props.location);
+    this.props.changeLocation(`${this.props.location.split('/')[0]}/${this.props.location.split('/')[1]}/${encodeURI(this.props.data.all[this.props.id].title)}`);
     this.props.setPlaying(this.props.id, index);
+  }
+
+  shareSong = e => {
+    console.log(this.props.id, decodeURI(document.location.href.split('/').slice(0, -1).join('/')), this.props.data.all[this.props.id].title);
+    navigator.clipboard.writeText(decodeURI(document.location.href.split('/').slice(0, -1).join('/')) + '/' + this.props.data.all[this.props.id].title);
+    this.toggleOptionView(e);
+    e.stopPropagation();
   }
 
   addToPlaylist = e => {
@@ -131,13 +144,18 @@ export class MusicItemBind extends Component {
   }
 
   render() {
+    const url = this.props.location.split('/');
+    const item = this.props.data.all[this.props.id];
+
     let musicItemClass = "music-item";
-    if(this.props.index === this.props.activeSong/* && this.props.queueVisible*/) {
+    
+    if(this.props.index === this.props.activeSong || decodeURI(url[2]) === item.title /* && this.props.queueVisible*/) {
       musicItemClass += " music-item-active"
     }
     let optionsContainerClass = "options-container " + this.state.optionsPositionClass;
     if(this.state.optionsVisible) optionsContainerClass += " options-container-visible";
-    const item = this.props.data.all[this.props.id];
+    
+    // console.log(this.props.location, item.title, this.props);
     // const title = item.title.match(/[а-яё][А-ЯЁ]+|[a-z][A-Z]+/i) ? item.title : item.path;
 
     return (
@@ -151,11 +169,13 @@ export class MusicItemBind extends Component {
         { this.renderRemoveButton() }
 
         {/* <div className="music-item-info info-padding"></div> */}
-        <div className="music-item-info">
-          {/* <div className="music-item-title">{title.substr(item.title.indexOf('-') + 1)}</div> */}
-          <div className="music-item-title">{item.title.match(/[а-яё][А-ЯЁ]+|[a-z][A-Z]+/i) ? item.title.substr(item.title.indexOf('-') + 1) : item.path.substr(item.path.indexOf('-') + 1)}</div>
-          <div className="music-item-more">{item.artist} - {item.album}</div>
-        </div>
+        <Link to={`/${url[0]}/${url[1]}/${item.title}`}>
+          <div className="music-item-info">
+            {/* <div className="music-item-title">{title.substr(item.title.indexOf('-') + 1)}</div> */}
+            <div className="music-item-title">{item.title.match(/[а-яё][А-ЯЁ]+|[a-z][A-Z]+/i) ? item.title.substr(item.title.indexOf('-') + 1) : item.path.substr(item.path.indexOf('-') + 1)}</div>
+            <div className="music-item-more">{item.artist} - {item.album}</div>
+          </div>
+        </Link>
       
         <div 
           className="music-item-options"
@@ -166,6 +186,11 @@ export class MusicItemBind extends Component {
             <div className="options-container-inner">
 
               <div className="options-list options-list-index">
+              <div 
+                  className="add-to-playlist"
+                  onClick={this.shareSong}>
+                    Share Song
+                </div>
                 <div 
                   className="add-to-playlist"
                   onClick={this.addToPlaylist}>

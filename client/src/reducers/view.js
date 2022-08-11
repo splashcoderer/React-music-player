@@ -17,6 +17,11 @@ const view = handleActions(
             activeIndex: action.payload.index
         }),
 
+        CHANGE_LOCATION: (state, action) => ({
+            ...state,
+            location: action.payload.location
+        }),
+
         TOGGLE_PLAYLIST_SELECT_VISIBLE: (state, action) => ({
             ...state,
             playlistSelect: !action.payload.visible
@@ -39,7 +44,9 @@ const view = handleActions(
         visibleCategory: 'songs',
         activeIndex: undefined,
         playlistSelect: false,
-        successModal: false    }
+        successModal: false,
+        location: '/'
+    }
 )
 
 export { view as default }

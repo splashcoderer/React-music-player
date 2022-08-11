@@ -263,6 +263,10 @@
     list-style-type: none;
 }
 
+.sidebar-list a {
+    text-decoration: none;
+}
+
 .sidebar-list ul li {
     width: 95%;
     margin: 15px 0;
@@ -276,4 +280,8 @@
 
 .sidebar-list ul li:hover {
     color:rgb(139, 148, 226);
+}
+
+.sidebar-list ul li.active {
+    color:rgb(177, 177, 226);
 }

@@ -24,7 +24,8 @@ let initState = {
         visibleCategory: 'songs',
         activeIndex: undefined,
         playlistSelect: false,
-        successModal: false
+        successModal: false,
+        location: '/'
     },
     nowPlaying:{
         playing: false,

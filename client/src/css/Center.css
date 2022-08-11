@@ -280,12 +280,14 @@
 }
 
 .music-item-options {
-  position:relative;
-  float:left;
-  height:60px;
-  width:5vw;
-  margin:0;
-  padding:0;
+  /* position: relative; */
+  position: absolute;
+  right: 20px;
+  /* float:left; */
+  height: 60px;
+  width: 5vw;
+  margin: 0;
+  padding: 0;
 }
 
 .options-container {

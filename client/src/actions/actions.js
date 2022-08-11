@@ -55,6 +55,7 @@ export const viewActions = createActions(
         CHANGE_ACTIVE_CATEGORY: category => ({ category }),
         CHANGE_VISIBLE_CATEGORY: category => ({ category }),
         CHANGE_ACTIVE_INDEX: index => ({ index }),
+        CHANGE_LOCATION: location => ({ location }),
         TOGGLE_PLAYLIST_SELECT_VISIBLE: visible => ({ visible }),
         TOGGLE_SUCCESS_MODAL: visible => ({ visible })
     },

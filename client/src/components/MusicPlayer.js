@@ -17,7 +17,8 @@ const mapStateToProps = (state, props) => ({
     shuffle: state.settings.shuffle,
     volume: state.settings.volume,
     data: state.data,
-    queue: state.queue
+    queue: state.queue,
+    location: state.view.location
 });
 
 const mapDispatchToProps = {
@@ -31,6 +32,17 @@ const mapDispatchToProps = {
   }
 
 class MusicPlayerBind extends Component {
+
+    constructor(props) {
+        super(props);
+        this.player = React.createRef();
+    }
+
+    // componentDidMount() {
+    //     setTimeout(() => {
+    //         this.player.current.setJumpTime(10);
+    //     }, 2000);
+    // }
 
     onEnded = () => {
         this.nextSong();
@@ -75,12 +87,14 @@ class MusicPlayerBind extends Component {
 
     render() {
         let musicItem = this.props.data.all[this.props.nowPlaying.item];
+        // console.log('now', this.props.nowPlaying.item);
         let musicPath = musicItem && musicItem.path;
         musicPath = encodeURI(musicPath);
         return(
           <div className={ "audio_player" + (this.props.nowPlaying.item > '' ? ' playing' : '')}>
             {/* <MainContent /> */}
             <AudioPlayer
+                ref={this.player}
                 autoPlay
                 src={window.location.origin + "/music" + musicPath}
                 onPlaying={e => this.props.setDuration(e.timeStamp)}
@@ -88,6 +102,7 @@ class MusicPlayerBind extends Component {
                 onClickNext={this.onClickNext}
                 onClickPrevious={this.previousSong}
                 onEnded={this.onEnded}
+                autoPlayAfterSrcChange={true}
                 // style={{position: 'absolute', zIndex: 11}}
                 showSkipControls={true}
                 customVolumeControls={[]}

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
+
 import { decode } from '../tools.js';
 import {
     viewActions,
@@ -7,16 +9,17 @@ import {
     dataActions
 } from '../actions/actions.js';
 import { config } from '../config';
-// import { BrowserRouter } from 'react-router'
 
 const mapStateToProps = (state, props) => ({
     visibleCategory: state.view.visibleCategory,
-    data: state.data
+    data: state.data,
+    location: state.view.location
 });
 
 const mapDispatchToProps = {
     changeActiveCategory: viewActions.changeActiveCategory,
     changeActiveIndex: viewActions.changeActiveIndex,
+    changeLocation: viewActions.changeLocation,
     toggleQueue: settingsActions.toggleQueue,
     updateData: dataActions.updateData
 }
@@ -32,20 +35,20 @@ export class SidebarContentItem extends Component {
     }
 
     changeActiveIndex = (e) => {
-        let index = e.target.innerHTML;
-        this.props.onActiveIndexChange(index);
-        // console.log(e);
-        // BrowserRouter.push('/some/path');
-        // this.props.history.push('/test');
+        this.props.onActiveIndexChange(typeof e === 'string' ? e : e.target.innerHTML);
     }
 
     listItems = (category) => {
         let keys = Object.keys(category);
         if(!keys.length) return;
         keys.sort();
+        const url = this.props.location.split('/');
+        // console.log(url);
         return (
-            keys.map(item => 
-                <li key={item} onClick={this.changeActiveIndex}>{item}</li>
+            keys.map(item =>
+                <Link key={item} to={`/${url[0]}/${encodeURI(item)}`}>
+                    <li key={item} onClick={this.changeActiveIndex} className={url[1] === encodeURI(item) ? 'active' : ''}>{item}</li>
+                </Link>
             )
         )
     }
@@ -120,10 +123,21 @@ export class SidebarContentItem extends Component {
 
 export class SidebarContentBind extends Component {
 
+    componentDidUpdate() {
+        const url = this.props.location.split('/');
+        if (url[1]) {
+            setTimeout(() => this.props.changeActiveIndex(decodeURI(url[1])), 500);
+            this.props.changeActiveCategory(this.props.visibleCategory);
+            this.props.toggleQueue(true);
+        }
+    }
+
     onActiveIndexChange = (index) => {
+        // console.log(index, `${this.props.location.split('/')[0]}/${encodeURI(index)}`, this.props.location);
         this.props.changeActiveIndex(decode(index));
         this.props.changeActiveCategory(this.props.visibleCategory);
         this.props.toggleQueue(true);
+        this.props.changeLocation(`${this.props.location.split('/')[0]}/${encodeURI(index)}`);
     }
 
     submitName = (name) => {
@@ -148,37 +162,61 @@ export class SidebarContentBind extends Component {
         return (
             <div className="sidebar-content-outer">
                 <div className="sidebar-background"></div>
+                {/* <Routes>
+                    <Route path='/' element={
+                        <SidebarContentItem
+                            name="songs"
+                            content="Folders"
+                            visible={this.props.visibleCategory}
+                            data={this.props.data.songs}
+                            onActiveIndexChange={this.onActiveIndexChange}/>}>
+                    </Route> 
+                    <Route path='/albums' element={
+                        <SidebarContentItem
+                            name="albums"
+                            content="Albums"
+                            visible={this.props.visibleCategory}
+                            data={this.props.data.albums}
+                            onActiveIndexChange={this.onActiveIndexChange}/>}>
+                    </Route>
+                </Routes> */}
                 <SidebarContentItem
                     name="songs"
                     content="Folders"
                     visible={this.props.visibleCategory}
                     data={this.props.data.songs}
+                    location={this.props.location}
                     onActiveIndexChange={this.onActiveIndexChange}/>
                 <SidebarContentItem
                     name="albums"
                     content="Albums"
                     visible={this.props.visibleCategory}
                     data={this.props.data.albums}
+                    location={this.props.location}
                     onActiveIndexChange={this.onActiveIndexChange}/>
                 <SidebarContentItem
                     name="artists"
                     content="Artists"
                     visible={this.props.visibleCategory}
-                    data={this.props.data.artists} 
+                    data={this.props.data.artists}
+                    location={this.props.location}
                     onActiveIndexChange={this.onActiveIndexChange}/>
                 <SidebarContentItem
                     name="genres"
                     content="Genres"
                     visible={this.props.visibleCategory}
-                    data={this.props.data.genres} 
+                    data={this.props.data.genres}
+                    location={this.props.location}
                     onActiveIndexChange={this.onActiveIndexChange}/>
                 <SidebarContentItem
                     name="playlists"
                     content="Playlists"
                     visible={this.props.visibleCategory}
-                    data={this.props.data.playlists} 
+                    data={this.props.data.playlists}
+                    location={this.props.location}
                     onActiveIndexChange={this.onActiveIndexChange}
                     submitName={this.submitName}/>
+                
             </div>
         )
     }
