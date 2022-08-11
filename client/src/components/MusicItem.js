@@ -38,7 +38,8 @@ const mapDispatchToProps = {
   togglePlaylistSelectVisible: viewActions.togglePlaylistSelectVisible,
   seekTo: playbackActions.seekTo,
   changeLocation: viewActions.changeLocation,
-  toggleSuccessModal: viewActions.toggleSuccessModal
+  toggleModalMessage: viewActions.toggleModalMessage,
+  openModalMessage: viewActions.openModalMessage
 }
 
 export class MusicItemBind extends Component {
@@ -86,8 +87,12 @@ export class MusicItemBind extends Component {
         text: this.props.data.all[this.props.id].title,
         title: this.props.data.all[this.props.id].title
       });
+      this.props.openModalMessage({ text: 'Shared' });
     } else {
-      // this.props.toggleSuccessModal();
+      this.props.openModalMessage({
+        time: 5,
+        text: 'Share isn\'t supported by Browser' 
+      });
     }
     this.toggleOptionView(e);
     e.stopPropagation();
@@ -97,8 +102,12 @@ export class MusicItemBind extends Component {
     // console.log(this.props.id, decodeURI(document.location.href.split('/').slice(0, -1).join('/')), this.props.data.all[this.props.id].title);
     if (navigator.clipboard) {
       navigator.clipboard.writeText(decodeURI(document.location.href.split('/').slice(0, -1).join('/')) + '/' + this.props.data.all[this.props.id].title);
+      this.props.openModalMessage({ text: 'Copied' });
     } else {
-      // this.props.toggleSuccessModal();
+      this.props.openModalMessage({
+        time: 5,
+        text: 'Copy not supported by Browser' 
+      });
     }
     this.toggleOptionView(e);
     e.stopPropagation();

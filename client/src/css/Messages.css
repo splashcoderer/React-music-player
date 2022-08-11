@@ -1,0 +1,58 @@
+.message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    height: 100px;
+    width: 330px;
+    border-radius: 10px;
+    background: rgba(29, 50, 77, 0.9);
+    padding: 0;
+    z-index: 1000;
+    animation: appear 0.5s ease-in-out;
+    color: white;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.message-visible {
+    left: 50%;
+    animation: appear .2s ease-in-out;
+}
+
+.message-inner {
+    position: relative;
+    height: 100px;
+    margin: 0;
+    padding: 0;
+}
+
+.message-check {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    width: 75px;
+    transform: translate(1px, -50%);
+    margin: 0;
+}
+
+#message-text {
+    display: block;
+    position: absolute;
+    top: 50%;
+    transform: translate(0px, -50%);
+    text-align: left;
+    font-size: 30px;
+    color: #fff;
+    padding-left: 70px;
+}

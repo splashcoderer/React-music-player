@@ -33,9 +33,19 @@ const view = handleActions(
             activeIndex: undefined
         }),
 
-        TOGGLE_SUCCESS_MODAL: (state, action) => ({
+        OPEN_MODAL_MESSAGE: (state, action) => ({
             ...state,
-            successModal: !action.payload.visible
+            messageConfig: action.payload.messageConfig
+        }),
+
+        CLOSE_MODAL_MESSAGE: (state, action) => ({
+            ...state,
+            messageConfig: { text: '' }
+        }),
+
+        TOGGLE_MODAL_MESSAGE: (state, action) => ({
+            ...state,
+            modalVisible: !action.payload.visible
         })
 
     },
@@ -44,7 +54,8 @@ const view = handleActions(
         visibleCategory: 'songs',
         activeIndex: undefined,
         playlistSelect: false,
-        successModal: false,
+        messageConfig: {},
+        modalVisible: false,
         location: '/'
     }
 )

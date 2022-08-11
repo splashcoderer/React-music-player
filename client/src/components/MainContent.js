@@ -3,7 +3,7 @@ import Sidebar from './Sidebar';
 import Center from './Center';
 import MediaBar from './MediaBar';
 import PlaylistSelect from './PlaylistSelect';
-import SuccessMessage from './SuccessMessage';
+import Messages from './Messages';
 
 class MainContent extends Component {
     render() {
@@ -13,7 +13,7 @@ class MainContent extends Component {
                 <Center />
                 <MediaBar />
                 <PlaylistSelect />
-                <SuccessMessage />
+                <Messages />
             </div>
         );
     }

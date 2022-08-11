@@ -57,7 +57,9 @@ export const viewActions = createActions(
         CHANGE_ACTIVE_INDEX: index => ({ index }),
         CHANGE_LOCATION: location => ({ location }),
         TOGGLE_PLAYLIST_SELECT_VISIBLE: visible => ({ visible }),
-        TOGGLE_SUCCESS_MODAL: visible => ({ visible })
+        OPEN_MODAL_MESSAGE:  messageConfig => ({ messageConfig }),
+        CLOSE_MODAL_MESSAGE:  messageConfig => ({ messageConfig }),
+        TOGGLE_MODAL_MESSAGE: visible => ({ visible })
     },
     'RESET_VIEW'
 )
