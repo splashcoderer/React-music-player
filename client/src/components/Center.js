@@ -54,7 +54,7 @@ export class CenterBind extends Component {
           // this.props.setActive();
         }, 10);
       }
-    }, 1000);
+    }, 3000);
   }
 
   render() {
@@ -79,7 +79,7 @@ export class CenterBind extends Component {
               <IndexPanel />
               <div className="music-list" ref={scroll => this.scroll = scroll}>
                 {
-                  list.map((item, index) =>
+                  list && list.map((item, index) =>
                     <MusicItem
                       key={index}
                       id={item}

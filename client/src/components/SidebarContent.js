@@ -137,6 +137,7 @@ export class SidebarContentBind extends Component {
         this.props.changeActiveIndex(decode(index));
         this.props.changeActiveCategory(this.props.visibleCategory);
         this.props.toggleQueue(true);
+
         this.props.changeLocation(`${this.props.location.split('/')[0]}/${encodeURI(index)}`);
     }
 
