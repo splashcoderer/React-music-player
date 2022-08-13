@@ -31,6 +31,9 @@
     font-size: 14px;
     font-stretch: condensed;
 }
+.title a {
+    color: white;
+}
 
 .navbar-icon {
     padding: 5px;

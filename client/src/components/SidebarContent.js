@@ -95,7 +95,7 @@ export class SidebarContentItem extends Component {
                 id={"sidebar-" + this.props.name} 
                 className={classNames} >
 
-                <div className="title">Private Player { config.version }</div>
+                <div className="title"><a href="/">Private Player { config.version }</a></div>
 
                 <div className="sidebar-header">    
                     <span>{this.props.content}</span>
