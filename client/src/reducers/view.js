@@ -46,6 +46,11 @@ const view = handleActions(
         TOGGLE_MODAL_MESSAGE: (state, action) => ({
             ...state,
             modalVisible: !action.payload.visible
+        }),
+
+        SHOW_PRELOADER: (state, action) => ({
+            ...state,
+            isPreloaderVisible: action.payload.isPreloaderVisible
         })
 
     },

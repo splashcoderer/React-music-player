@@ -59,7 +59,8 @@ export const viewActions = createActions(
         TOGGLE_PLAYLIST_SELECT_VISIBLE: visible => ({ visible }),
         OPEN_MODAL_MESSAGE:  messageConfig => ({ messageConfig }),
         CLOSE_MODAL_MESSAGE:  messageConfig => ({ messageConfig }),
-        TOGGLE_MODAL_MESSAGE: visible => ({ visible })
+        TOGGLE_MODAL_MESSAGE: visible => ({ visible }),
+        SHOW_PRELOADER: isPreloaderVisible => ({ isPreloaderVisible })
     },
     'RESET_VIEW'
 )

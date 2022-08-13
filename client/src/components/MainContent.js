@@ -4,6 +4,7 @@ import Center from './Center';
 import MediaBar from './MediaBar';
 import PlaylistSelect from './PlaylistSelect';
 import Messages from './Messages';
+import Preloader from './Preloader';
 
 class MainContent extends Component {
     render() {
@@ -14,6 +15,7 @@ class MainContent extends Component {
                 <MediaBar />
                 <PlaylistSelect />
                 <Messages />
+                <Preloader />
             </div>
         );
     }
