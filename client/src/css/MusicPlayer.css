@@ -14,3 +14,33 @@
 .audio_player.playing .rhap_progress-indicator {
     background-color: white;
 }
+
+.audio_player.playing.with_big_play_button .rhap_play-pause-button {
+    position: absolute;
+    top: -45vh;
+    left: calc(50% - 50px);
+    z-index: 111;
+    width: 100px;
+    height: 100px;
+}
+
+.big_play_button_bg {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: -88vh;
+    left: 0;
+    background-color: rgb(11, 11, 11, .75);
+    color: white;
+    font-size: 2em;
+    text-align: center;
+    padding-top: 30vh;
+}
+
+.big_play_button_bg .close {
+    opacity: .7;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+}

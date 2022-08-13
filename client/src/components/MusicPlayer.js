@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import AudioPlayer from 'react-h5-audio-player';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 import '../css/MusicPlayer.css';
-import AudioPlayer from 'react-h5-audio-player';
-
 import {
     playbackActions,
     dataActions,
@@ -18,6 +18,9 @@ const mapStateToProps = (state, props) => ({
     volume: state.settings.volume,
     data: state.data,
     queue: state.queue,
+    queueVisible: state.settings.queue,
+    activeCategory: state.view.activeCategory,
+    activeIndex: state.view.activeIndex,
     location: state.view.location
 });
 
@@ -32,17 +35,51 @@ const mapDispatchToProps = {
   }
 
 class MusicPlayerBind extends Component {
-
     constructor(props) {
         super(props);
         this.player = React.createRef();
+        this.ref = React.createRef();
+        this.state = {
+            isBigPlayVisible: false
+        }
     }
 
-    // componentDidMount() {
-    //     setTimeout(() => {
-    //         this.player.current.setJumpTime(10);
-    //     }, 2000);
-    // }
+    componentDidMount() {
+        // setTimeout(() => {this.ref.current.click();}, 500);
+        setTimeout(() => {
+          const list = this.props.queueVisible ? this.props.queue : this.props.data[this.props.activeCategory][this.props.activeIndex];
+        //   console.log('list', list, this.props.data);
+    
+          const url = this.props.location.split('/');
+          if (list && url[2]) {
+            let item2play = '';
+            for (const key in this.props.data.all) {
+                if (this.props.data.all[key].title === decodeURI(url[2])) item2play = key;
+            }
+    
+            const item2playIndex = list.findIndex(e => e === item2play);
+
+            this.props.setQueue(list);
+            this.props.setPlaying(item2play, item2playIndex);
+    
+            setTimeout(() => {
+                // this.props.seekTo(100);
+                //   this.ref.current.className += ' with_big_play_button';
+                this.setState({ isBigPlayVisible: true });
+            }, 10);
+          }
+        }, 1000);
+
+        // setTimeout(() => {
+        //     // this.player.current.click();
+        //     this.player.current.handlePlay(new Event('click'));
+        //     console.log('player', this.player.current);
+        // }, 3000);
+    }
+
+    onPreviewCloseClick = () => { this.setState({ isBigPlayVisible: false }) };
+
+    onPlayerPlay = () => { this.setState({ isBigPlayVisible: false }) };
 
     onEnded = () => {
         this.nextSong();
@@ -87,16 +124,21 @@ class MusicPlayerBind extends Component {
 
     render() {
         let musicItem = this.props.data.all[this.props.nowPlaying.item];
-        // console.log('now', this.props.nowPlaying.item);
         let musicPath = musicItem && musicItem.path;
         musicPath = encodeURI(musicPath);
         return(
-          <div className={ "audio_player" + (this.props.nowPlaying.item > '' ? ' playing' : '')}>
+          <div ref={this.ref} 
+            className={ ("audio_player" + (this.props.nowPlaying.item > '' ? ' playing' : '') + (this.state.isBigPlayVisible ? ' with_big_play_button' : ''))}>
+            {this.state.isBigPlayVisible && <div className='big_play_button_bg'>
+                <div className='close' onClick={ this.onPreviewCloseClick }><AiOutlineCloseCircle></AiOutlineCloseCircle></div>
+                { musicItem.path.split('/')[2] }
+            </div>}
             {/* <MainContent /> */}
             <AudioPlayer
                 ref={this.player}
                 autoPlay
                 src={window.location.origin + "/music" + musicPath}
+                onPlay={this.onPlayerPlay}
                 onPlaying={e => this.props.setDuration(e.timeStamp)}
                 onListen={e => this.props.updateTime(e.timeStamp)}
                 onClickNext={this.onClickNext}

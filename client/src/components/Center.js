@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import {
-  playbackActions,
-  queueActions,
   viewActions
 } from '../actions/actions.js';
 
@@ -23,39 +21,10 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = {
-  setPlaying: playbackActions.setPlaying,
-  setActive: playbackActions.setActive,
-  setQueue: queueActions.setQueue,
-  seekTo: playbackActions.seekTo,
   changeLocation: viewActions.changeLocation,
 }
 
 export class CenterBind extends Component {
-  
-  componentDidMount() {
-    setTimeout(() => {
-      const list = this.props.queueVisible ? this.props.queue : this.props.data[this.props.activeCategory][this.props.activeIndex];
-      // console.log('list', list, this.props.data);
-      // this.props.setPlaying('Z2q6R6E', 7);
-
-      const url = this.props.location.split('/');
-      if (list && url[2]) {
-        let item2play = '';
-        for (const key in this.props.data.all) {
-          if (this.props.data.all[key].title === decodeURI(url[2])) item2play = key;
-        }
-
-        const item2playIndex = list.findIndex(e => e === item2play);
-        
-        setTimeout(() => {
-          this.props.setQueue(list);
-          this.props.setPlaying(item2play, item2playIndex);
-          // this.props.seekTo(100);
-          // this.props.setActive();
-        }, 10);
-      }
-    }, 3000);
-  }
 
   render() {
     let list = [];

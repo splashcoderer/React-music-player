@@ -211,6 +211,7 @@
 .music-list {
   position: relative;
   width: 67vw;
+  overflow: hidden;
   height: calc(90vh - 154px);
   overflow-y: scroll;
   float: left;
@@ -266,10 +267,48 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow-x: hidden;
+
+  display: inline-block;
+  /* animation: marquee 5s linear infinite; */
+  /* animation: slider 5s linear infinite alternate; */
+  /* animation-delay: 3s; */
 }
 .music-item-more {
   font-size: 14px;;
 }
+
+@keyframes slider {
+  0%   { 
+    -moz-transform: translateX(-50%); /* Firefox bug fix */
+    -webkit-transform: translateX(-50%); /* Firefox bug fix */
+    transform: translateX(-50%); 		
+  }
+  100% { 
+    -moz-transform: translateX(0%); /* Firefox bug fix */
+    -webkit-transform: translateX(0%); /* Firefox bug fix */
+    transform: translateX(0%); 
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
+  }
+}
+
+.marquee span {
+  float: left;
+  width: 50%;
+}
+
+@keyframes marquee {
+  0% { left: 0; }
+  100% { left: -30%; }
+}
+
 
 .music-item-active {
   background:rgba(210, 228, 255, 0.3);
@@ -391,4 +430,32 @@ div.download a {
 .share-song svg, .copy-link svg {
   position: relative;
   left: 0;
+}
+
+
+.marquee {
+  height: 25px;
+  width: 420px;
+  overflow: hidden;
+  position: relative;
+  color: white;
+}
+
+.marquee div {
+  display: block;
+  width: 200%;
+  height: 30px;
+  position: absolute;
+  overflow: hidden;
+  animation: marquee 5s linear infinite;
+  animation-delay: 3s;
+}
+
+.modal-play {
+  position: absolute;
+  z-index: 111;
+  top: 50%;
+  cursor: pointer;
+  color: white;
+  background-color: rgb(22, 44, 78, 0.9);
 }
