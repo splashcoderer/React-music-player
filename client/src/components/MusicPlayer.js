@@ -5,7 +5,6 @@ import AudioPlayer from 'react-h5-audio-player';
 import '../css/MusicPlayer.css';
 import {
     playbackActions,
-    dataActions,
     queueActions,
     viewActions
   } from '../actions/actions.js';

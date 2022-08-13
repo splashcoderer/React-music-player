@@ -44,10 +44,6 @@ const mapDispatchToProps = {
 }
 
 export class MainContainerBind extends Component {
-  
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
         // console.log('pathname', this.props.history.location.pathname.slice(1));
