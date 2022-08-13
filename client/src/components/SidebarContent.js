@@ -123,17 +123,7 @@ export class SidebarContentItem extends Component {
 
 export class SidebarContentBind extends Component {
 
-    componentDidUpdate() {
-        const url = this.props.location.split('/');
-        if (url[1]) {
-            setTimeout(() => this.props.changeActiveIndex(decodeURI(url[1])), 500);
-            this.props.changeActiveCategory(this.props.visibleCategory);
-            this.props.toggleQueue(true);
-        }
-    }
-
     onActiveIndexChange = (index) => {
-        // console.log(index, `${this.props.location.split('/')[0]}/${encodeURI(index)}`, this.props.location);
         this.props.changeActiveIndex(decode(index));
         this.props.changeActiveCategory(this.props.visibleCategory);
         this.props.toggleQueue(true);

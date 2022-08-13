@@ -15,7 +15,7 @@ const mapDispatchToProps = {
 class PreloaderBind extends Component {
     componentDidMount() {
         this.props.showPreloader(true);
-        setTimeout(() => this.props.showPreloader(false), 1100);
+        // setTimeout(() => this.props.showPreloader(false), 1100);
     }
 
     render() {

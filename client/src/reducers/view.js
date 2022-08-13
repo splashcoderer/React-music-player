@@ -51,6 +51,11 @@ const view = handleActions(
         SHOW_PRELOADER: (state, action) => ({
             ...state,
             isPreloaderVisible: action.payload.isPreloaderVisible
+        }),
+
+        SONG_PREVIEW: (state, action) => ({
+            ...state,
+            isPreviewVisible: action.payload.isPreviewVisible
         })
 
     },

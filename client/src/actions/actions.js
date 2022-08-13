@@ -60,7 +60,8 @@ export const viewActions = createActions(
         OPEN_MODAL_MESSAGE:  messageConfig => ({ messageConfig }),
         CLOSE_MODAL_MESSAGE:  messageConfig => ({ messageConfig }),
         TOGGLE_MODAL_MESSAGE: visible => ({ visible }),
-        SHOW_PRELOADER: isPreloaderVisible => ({ isPreloaderVisible })
+        SHOW_PRELOADER: isPreloaderVisible => ({ isPreloaderVisible }),
+        SONG_PREVIEW: isPreviewVisible => ({ isPreviewVisible })
     },
     'RESET_VIEW'
 )
