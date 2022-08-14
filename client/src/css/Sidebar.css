@@ -244,12 +244,22 @@
     position: relative;
     float: left;
     height: 81vh;
+    /* height: calc(100vh - 150px); */
     width: 100%;
     margin: 0;
     padding: 0;
     padding-right: 50px;
     overflow-y: scroll;
     transition: height .1s ease-in-out;
+}
+/* hack for Safari: */
+/* @supports (overflow:-webkit-marquee) and (justify-content:inherit)  */
+@media not all and (min-resolution:.001dpcm) { 
+    @supports (-webkit-appearance: none) {
+        .sidebar-list {
+            height: 71vh;
+        }
+    }
 }
 
 .new-playlist-form-visible {

@@ -212,12 +212,20 @@
   position: relative;
   width: 67vw;
   overflow: hidden;
-  height: calc(90vh - 154px);
+  height: calc(90vh - 180px);
   overflow-y: scroll;
   float: left;
   margin: 0;
   padding: 0;
   padding-right: 20px;
+}
+/* hack for Safari: */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance: none) {
+      .music-list {
+        height: calc(90vh - 260px);
+      }
+  }
 }
 
 .music-item {
