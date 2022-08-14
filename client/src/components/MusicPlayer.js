@@ -72,11 +72,9 @@ class MusicPlayerBind extends Component {
         const musicItem = this.props.data.all[this.props.nowPlaying.item];
         fetch(config.baseUrl + '/writeCurrentSong', {
             method: 'POST',
-            // headers:{
-            //     'Content-Type': 'application/json',
-            //     'Accept': 'application/json'
-            // },
+            headers:{ 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: musicItem.path.split('/')[2] })
+            // body: musicItem.path.split('/')[2]
         })
         .then(res => res.json())
         .catch(error => console.error('Error:', error))

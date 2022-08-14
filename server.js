@@ -207,8 +207,8 @@ const currentSongFile = 'song';
 const writeCurrentSong = (req, res) => {
     let form = new formidable.IncomingForm();
     form.parse(req, (err, fields) => {
-        // console.log('parse', fields.name);
-        fs.writeFileSync(currentSongFile, fields.name, { encoding: 'utf8' });
+        // console.log('writeCurrentSong', form, fields);
+        if (fields.name) fs.writeFileSync(currentSongFile, fields.name);
         res.end(JSON.stringify({ok: 'ok'}));
     });    
 }
