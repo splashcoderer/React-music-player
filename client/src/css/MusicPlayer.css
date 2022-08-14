@@ -45,3 +45,15 @@
     right: 30px;
     cursor: pointer;
 }
+
+.current_song {
+    color: white;
+    position: absolute;
+    display: inline;
+    width: calc(100vw - 100px);
+    top: -20px;
+    /* background-color: rgb(1, 1, 1, .9); */
+    /* background-color: rgb(38, 73, 124); */
+    white-space: nowrap;
+    overflow: hidden;
+}

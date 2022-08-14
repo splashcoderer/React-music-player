@@ -6,12 +6,13 @@ const parseSongs = require('./parse.js').parseSongs;
 const webSiteDir = './client/build';
 
 const handler = (req, res) => {
-    console.log('request', req.url, req.method);
+    // console.log('request', req.url, req.method, req.body);
     let dest = req.url;
 
     const headers = {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
+        "Access-Control-Allow-Headers": "Authorization,Content-Type,Accept,Origin,User-Agent,DNT,Cache-Control,X-Mx-ReqToken",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
         "Access-Control-Max-Age": 2592000, // 30 days
     };
     if (req.method === "OPTIONS") {
@@ -22,7 +23,8 @@ const handler = (req, res) => {
         res.writeHead(200, headers);
     }
 
-    if(req.method.toLowerCase() == 'get') {
+    // console.log('req');
+    if(req.method.toLowerCase() === 'get') {
         switch(dest) {
             case '/getSongs':
                 getSongs(req, res);
@@ -33,10 +35,13 @@ const handler = (req, res) => {
             case '/refreshData':
                 refreshData(req, res);
                 break;
+            case '/readCurrentSong':
+                readCurrentSong(req, res);
+                break;
             default:
                 res.end();
         }
-    } else if(req.method.toLowerCase() == 'post') {
+    } else if(req.method.toLowerCase() === 'post') {
         switch(dest) {
             case '/addPlaylist':
                 addPlaylist(req, res);
@@ -52,6 +57,9 @@ const handler = (req, res) => {
                 break;
             case '/editPlaylistName':
                 editPlaylistName(req, res);
+                break;
+            case '/writeCurrentSong':
+                writeCurrentSong(req, res);
                 break;
             default:
                 res.end();
@@ -192,6 +200,31 @@ const editPlaylistName = (req, res) => {
             res.end(JSON.stringify(dataMap));
         });
     });
+}
+
+const currentSongFile = 'song';
+
+const writeCurrentSong = (req, res) => {
+    let form = new formidable.IncomingForm();
+    form.parse(req, (err, fields) => {
+        // console.log('parse', fields.name);
+        fs.writeFileSync(currentSongFile, fields.name, { encoding: 'utf8' });
+        res.end(JSON.stringify({ok: 'ok'}));
+    });    
+}
+
+const readCurrentSong = (req, res) => {
+    const name = fs.readFileSync(currentSongFile, { encoding: 'utf8' });
+    const time = fs.statSync(currentSongFile);
+    // console.log('song', name, time);
+    res.end(JSON.stringify({ song: { name, time: time.mtime } }));
+
+    // fs.watchFile(currentSongFile, (curr, prev) => {
+    //     console.log(`the current mtime is: ${curr.mtime}`);
+    //     console.log(`the previous mtime was: ${prev.mtime}`);
+    //     const song = fs.readFileSync(currentSongFile, { encoding: 'utf8' });
+    //     res.send(JSON.stringify({ song }));
+    // });
 }
 
 createServer(handler).listen(5000);

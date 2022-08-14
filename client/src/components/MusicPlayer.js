@@ -9,6 +9,8 @@ import {
     viewActions
   } from '../actions/actions.js';
   import { getRandomArbitrary } from '../utils';
+  import { config } from '../config';
+  import { GiMusicSpell } from 'react-icons/gi';
 
 const mapStateToProps = (state, props) => ({
     nowPlaying: state.nowPlaying,
@@ -38,9 +40,51 @@ class MusicPlayerBind extends Component {
         super(props);
         this.player = React.createRef();
         this.ref = React.createRef();
+        this.state = {
+            currentSong: ''
+        }
     }
 
-    onPlayerPlay = () => { this.props.songPreview(false) };
+    componentDidMount() {
+        this.readCurrentSong();
+        setInterval(() => this.readCurrentSong(), 10000);
+    }
+
+    readCurrentSong = () => {
+        fetch(config.baseUrl + '/readCurrentSong', {
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        })
+        .then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+            console.log('readCurrentSong', response);
+            response && this.setState({ currentSong: response.song });
+        });
+    }
+
+    onPlayerPlay = () => {
+        this.props.songPreview(false);
+
+        const musicItem = this.props.data.all[this.props.nowPlaying.item];
+        fetch(config.baseUrl + '/writeCurrentSong', {
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ name: musicItem.path.split('/')[2] })
+        })
+        .then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+            this.setState({ currentSong: { name: musicItem.path.split('/')[2] } });
+        });
+        // .then(response => { console.log('response', response); });
+    };
 
     onEnded = () => {
         this.nextSong();
@@ -91,6 +135,7 @@ class MusicPlayerBind extends Component {
           <div ref={this.ref} 
             className={ ("audio_player" + (this.props.nowPlaying.item > '' ? ' playing' : ''))}>
             {/* <MainContent /> */}
+            <div className='current_song'><GiMusicSpell className='spinner' /> { this.state.currentSong.name }</div>
             <AudioPlayer
                 ref={this.player}
                 autoPlay

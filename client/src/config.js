@@ -1,4 +1,4 @@
 export const config = {
     baseUrl: `//${window.location.hostname}:5000`,
-    version: 1.19
+    version: 1.20
 }
