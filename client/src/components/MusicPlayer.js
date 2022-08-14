@@ -46,7 +46,7 @@ class MusicPlayerBind extends Component {
     }
 
     componentDidMount() {
-        this.readCurrentSong();
+        // this.readCurrentSong();
         setInterval(() => this.readCurrentSong(), 10000);
     }
 
