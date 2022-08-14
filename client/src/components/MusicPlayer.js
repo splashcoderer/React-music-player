@@ -53,10 +53,10 @@ class MusicPlayerBind extends Component {
     readCurrentSong = () => {
         fetch(config.baseUrl + '/readCurrentSong', {
             method: 'GET',
-            headers:{
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
+            // headers:{
+            //     'Content-Type': 'application/json',
+            //     'Accept': 'application/json'
+            // },
         })
         .then(res => res.json())
         .catch(error => console.error('Error:', error))
@@ -72,10 +72,10 @@ class MusicPlayerBind extends Component {
         const musicItem = this.props.data.all[this.props.nowPlaying.item];
         fetch(config.baseUrl + '/writeCurrentSong', {
             method: 'POST',
-            headers:{
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
+            // headers:{
+            //     'Content-Type': 'application/json',
+            //     'Accept': 'application/json'
+            // },
             body: JSON.stringify({ name: musicItem.path.split('/')[2] })
         })
         .then(res => res.json())
