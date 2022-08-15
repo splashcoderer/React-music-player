@@ -185,7 +185,7 @@ export class MusicItemBind extends Component {
 
     let musicItemClass = "music-item";
     
-    if(this.props.index === this.props.activeSong || decodeURI(url[2]) === item.title /* && this.props.queueVisible*/) {
+    if(this.props.index === this.props.activeSong/* || decodeURI(url[2]) === item.title *//* && this.props.queueVisible*/) {
       musicItemClass += " music-item-active"
     }
     let optionsContainerClass = "options-container " + this.state.optionsPositionClass;

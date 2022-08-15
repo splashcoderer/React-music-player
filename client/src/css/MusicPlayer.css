@@ -35,15 +35,18 @@
     color: white;
     font-size: 2em;
     text-align: center;
-    padding-top: 20vh;
 }
 
-.big_play_button_bg .close {
+.big_play_button_bg .big_play_button_bg-close {
     opacity: .7;
     position: absolute;
     top: 30px;
     right: 30px;
     cursor: pointer;
+}
+
+.big_play_button_bg .big_play_button_bg-title {
+    margin-top: 20vh;
 }
 
 .current_song {

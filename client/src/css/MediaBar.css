@@ -55,6 +55,8 @@
 .song-text {
     position: absolute;
     text-shadow: 3px 3px 3px black;
+    height: 10vh;
+    overflow: hidden;
 }
 
 .song-title, .song-artist {

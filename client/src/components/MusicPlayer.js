@@ -69,16 +69,20 @@ class MusicPlayerBind extends Component {
     onPlayerPlay = () => {
         this.props.songPreview(false);
 
-        const musicItem = this.props.data.all[this.props.nowPlaying.item];
+        let musicItem = this.props.data.all[this.props.nowPlaying.item];
+        if (musicItem) musicItem = musicItem.path.split('/')[2].replace('.mp3', '');
+
+        document.title = musicItem + ' | pplayer.ru';
+
         fetch(config.baseUrl + '/writeCurrentSong', {
             method: 'POST',
             headers:{ 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: musicItem.path.split('/')[2] })
+            body: JSON.stringify({ name: musicItem })
         })
         .then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(response => {
-            this.setState({ currentSong: { name: musicItem.path.split('/')[2] } });
+            this.setState({ currentSong: { name: musicItem } });
         });
         // .then(response => { console.log('response', response); });
     };
@@ -150,7 +154,7 @@ class MusicPlayerBind extends Component {
                 showSkipControls={true}
                 customVolumeControls={[]}
                 customAdditionalControls={[]}
-                showJumpControls={false}
+                showJumpControls={true}
                 // showFilledVolume={true}
             />
             {/* { this.renderSound() } */}
