@@ -11,7 +11,7 @@ const handler = (req, res) => {
 
     const headers = {
         "Access-Control-Allow-Origin": "*",
-        // "Access-Control-Allow-Headers": "Authorization,Content-Type,Accept,Origin,User-Agent,DNT,Cache-Control,X-Mx-ReqToken",
+        "Access-Control-Allow-Headers": "Authorization,Content-Type,Accept,Origin,User-Agent,DNT,Cache-Control,X-Mx-ReqToken",
         "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
         "Access-Control-Max-Age": 2592000, // 30 days
     };
