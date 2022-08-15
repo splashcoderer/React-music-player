@@ -103,6 +103,8 @@ const parseSongs = (dir, done) => {
                                     entry.title = tags.title;
                                 }
 
+                                entry.url = translit(entry.title).replace(/ /g, '_').replace(/[^a-zA-Z0-9_]/g,'_');
+
                                 newFileName = fileName + ext;
                                 // let newFileName = translit(fileName);
                                 // newFileName = newFileName.replace(/\s+/g,'-') + ext;
