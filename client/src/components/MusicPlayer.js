@@ -172,7 +172,7 @@ class MusicPlayerBind extends Component {
                 showSkipControls={true}
                 customVolumeControls={[]}
                 customAdditionalControls={[]}
-                showJumpControls={true}
+                showJumpControls={false}
                 // showFilledVolume={true}
             />
             {/* { this.renderSound() } */}
