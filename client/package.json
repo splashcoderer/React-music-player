@@ -5,7 +5,7 @@
   "dependencies": {
     "react": "^16.14.0",
     "react-dom": "^16.3.2",
-    "react-h5-audio-player": "^3.7.2",
+    "react-h5-audio-player": "^3.8.4",
     "react-icons": "^4.4.0",
     "react-redux": "^5.0.7",
     "react-router": "^6.3.0",
