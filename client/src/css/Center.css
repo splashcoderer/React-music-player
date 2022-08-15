@@ -1,31 +1,31 @@
 .view-outer {
   position: absolute;
-  right:0;
-  top:0;
-  height:90vh;
-  width:80vw;
-  margin:0;
-  padding:0;
-  overflow:hidden;
-  background:#000;
+  right: 0;
+  top: 0;
+  height: 90vh;
+  width: 80vw;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #000;
 }
 
 .view-background {
-  position:absolute;
-  top:0;
-  left:0;
-  transform:translate(-20vw,0);
-  height:100vh;
-  width:100vw;
-  filter:blur(7px) brightness(55%);
-  z-index:1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-20vw,0);
+  height: 100vh;
+  width: 100vw;
+  filter: blur(7px) brightness(55%);
+  z-index: 1;
   background-image: url('/bg.jpg');
   background-position: -70px;
 }
 
 .view-background img {
-  margin:0;
-  width:100vw;
+  margin: 0;
+  width: 100vw;
 }
 
 .view-inner {
@@ -368,9 +368,9 @@
 .options-container-inner {
   /* position: relative;
   height: 220px;
-  width: 150px;
+  width: 150px; */
   margin: 0;
-  padding: 0; */
+  padding: 0;
 }
 
 .tail {

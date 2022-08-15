@@ -1,6 +1,7 @@
 .rhap_container {
     width: auto !important;
     background-color: transparent !important;
+    outline: 0;
 }
 
 .rhap_time {
@@ -13,6 +14,10 @@
 
 .audio_player.playing .rhap_progress-indicator {
     background-color: white;
+}
+
+private_player {
+    /* height: 90vh; */
 }
 
 .private_player.with_big_play_button .rhap_play-pause-button {

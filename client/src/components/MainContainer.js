@@ -147,7 +147,7 @@ export class MainContainerBind extends Component {
 
     render() {
         const musicItem = this.props.data.all[this.props.nowPlaying.item];
-        let musicPath = musicItem && musicItem.path.split('/')[2].replace('.mp3', '') || 'Song not found';
+        let musicPath = (musicItem && musicItem.path.split('/')[2].replace('.mp3', '')) || 'Song not found';
         // musicPath = encodeURI(musicPath);
         return(
         <div className={ "private_player" + (this.props.isPreviewVisible ? ' with_big_play_button' : '')}>
