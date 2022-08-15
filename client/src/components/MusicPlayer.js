@@ -49,8 +49,25 @@ class MusicPlayerBind extends Component {
     }
 
     componentDidMount() {
+        this.setMediaHandlersForLockedScreen();
+
         this.readCurrentSong();
         setInterval(() => this.readCurrentSong(), 10000);
+    }
+
+    setMediaHandlersForLockedScreen() {
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+            this.previousSong();
+        });
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+            this.nextSong();
+        });
+        navigator.mediaSession.setActionHandler('play', async () => {
+            await this.player.current.audio.current.play();
+        });
+        navigator.mediaSession.setActionHandler('pause', () => {
+            this.player.current.audio.current.pause();
+        });
     }
 
     readCurrentSong = () => {
@@ -63,6 +80,7 @@ class MusicPlayerBind extends Component {
             response.song.range = getDateRange(response.song.time);
             // console.log('readCurrentSong', response);
             response && this.setState({ currentSong: response.song });
+            if (navigator.mediaSession.metadata) navigator.mediaSession.metadata.album = response.song.name;
         });
     }
 

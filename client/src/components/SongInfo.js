@@ -59,6 +59,22 @@ const mapStateToProps = (state, props) => ({
 });
 
 class SongInfoBind extends Component {
+    componentDidUpdate() {
+        let coverPath = window.location.origin;
+        let id = this.props.queue[this.props.activeSong];
+        let item = id ? this.props.data[id] : {};
+        if (this.props.activeSong && item.cover) coverPath += "/covers" + item.cover; else coverPath += "/album.jpg";
+
+        navigator.mediaSession.metadata = new window.MediaMetadata({
+            title: item.artist + ' - ' + item.title,
+            // artist: item.artist,
+            // album: '',
+            artwork: [
+              { src: coverPath, sizes: '512x512', type: 'image/png' },
+            ]
+        });
+    }
+
     render() {
         let coverPath = window.location.origin;
         let id = this.props.queue[this.props.activeSong];
@@ -71,17 +87,17 @@ class SongInfoBind extends Component {
         return(
             <div className="song-info">
                 <div className="song-chords">
-                    {item.chords}
+                    { item.chords }
                 </div>
                 <div className="song-album-cover">
                     <img src={coverPath} alt="" />
                 </div>
                 <div className="song-text">
                     <div className="song-title">
-                        {item.title}
+                        { item.title }
                     </div>
                     <div className="song-artist">
-                        {item.artist}
+                        { item.artist }
                     </div>
                     {this.props.activeSong === undefined && <RefreshButton />}
                 </div>
