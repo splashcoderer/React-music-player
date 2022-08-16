@@ -49,11 +49,10 @@ class MusicPlayerBind extends Component {
     }
 
     componentDidMount() {
-        // this.setMediaHandlersForLockedScreen();
+        this.setMediaHandlersForLockedScreen();
 
         this.readCurrentSong();
         setInterval(() => this.readCurrentSong(), 10000);
-        setInterval(() => navigator.mediaSession.setActionHandler('nexttrack', () => {this.nextSong();}), 20000);
     }
 
     setMediaHandlersForLockedScreen() {
@@ -104,6 +103,8 @@ class MusicPlayerBind extends Component {
             this.setState({ currentSong: { name: musicItem } });
         });
         // .then(response => { console.log('response', response); });
+
+        this.setMediaHandlersForLockedScreen();
     };
 
     onEnded = () => {
