@@ -49,25 +49,8 @@ class MusicPlayerBind extends Component {
     }
 
     componentDidMount() {
-        this.setMediaHandlersForLockedScreen();
-
         this.readCurrentSong();
         setInterval(() => this.readCurrentSong(), 10000);
-    }
-
-    setMediaHandlersForLockedScreen() {
-        navigator.mediaSession.setActionHandler('previoustrack', () => {
-            this.previousSong();
-        });
-        navigator.mediaSession.setActionHandler('nexttrack', () => {
-            this.nextSong();
-        });
-        navigator.mediaSession.setActionHandler('play', async () => {
-            await this.player.current.audio.current.play();
-        });
-        navigator.mediaSession.setActionHandler('pause', () => {
-            this.player.current.audio.current.pause();
-        });
     }
 
     readCurrentSong = () => {
@@ -104,7 +87,7 @@ class MusicPlayerBind extends Component {
         });
         // .then(response => { console.log('response', response); });
 
-        this.setMediaHandlersForLockedScreen();
+        // this.setMediaHandlersForLockedScreen();
     };
 
     onEnded = () => {
