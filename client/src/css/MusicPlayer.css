@@ -20,14 +20,14 @@ private_player {
     /* height: 90vh; */
 }
 
-.private_player.with_big_play_button .rhap_play-pause-button {
+/* .private_player.with_big_play_button .rhap_play-pause-button {
     position: absolute;
     top: -45vh;
     left: calc(50% - 50px);
     z-index: 111;
     width: 100px;
     height: 100px;
-}
+} */
 
 .big_play_button_bg {
     position: absolute;
@@ -58,10 +58,24 @@ private_player {
     color: white;
     position: absolute;
     display: inline;
-    width: calc(100vw - 100px);
+    width: calc(100vw - 80px);
     top: -20px;
+    left: 80px;
     /* background-color: rgb(1, 1, 1, .9); */
     /* background-color: rgb(38, 73, 124); */
     white-space: nowrap;
     overflow: hidden;
+}
+
+.preview_play_button {
+    display: none;
+}
+
+.private_player.with_big_play_button .preview_play_button {
+    display: block;
+    position: absolute;
+    top: -45vh;
+    left: calc(50% - 80px);
+    z-index: 111;
+    cursor: pointer;
 }

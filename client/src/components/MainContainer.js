@@ -60,7 +60,6 @@ export class MainContainerBind extends Component {
 
             this.props.showPreloader(false);
             this.initAfterDataLoaded();
-            this.setMediaHandlersForLockedScreen();
         })
         .catch(err =>  {
             console.log(err)
@@ -100,21 +99,6 @@ export class MainContainerBind extends Component {
                 // }, 10);
             }
         // }, 10);
-    }
-
-    setMediaHandlersForLockedScreen() {
-        navigator.mediaSession.setActionHandler('previoustrack', () => {
-            this.previousSong();
-        });
-        navigator.mediaSession.setActionHandler('nexttrack', () => {
-            this.nextSong();
-        });
-        navigator.mediaSession.setActionHandler('play', async () => {
-            await this.player.current.audio.current.play();
-        });
-        navigator.mediaSession.setActionHandler('pause', () => {
-            this.player.current.audio.current.pause();
-        });
     }
 
     onPreviewCloseClick = () => { this.props.songPreview(false) };

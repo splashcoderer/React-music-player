@@ -8,9 +8,10 @@ import {
     queueActions,
     viewActions
   } from '../actions/actions.js';
-  import { getRandomArbitrary } from '../utils';
-  import { config } from '../config';
-  import { GiMusicSpell } from 'react-icons/gi';
+import { getRandomArbitrary } from '../utils';
+import { config } from '../config';
+import { GiMusicSpell } from 'react-icons/gi';
+import { MdPlayCircleOutline } from 'react-icons/md';
 import { getDateRange } from '../utils/date';
 
 const mapStateToProps = (state, props) => ({
@@ -49,8 +50,25 @@ class MusicPlayerBind extends Component {
     }
 
     componentDidMount() {
+        this.setMediaHandlersForLockedScreen();
+
         this.readCurrentSong();
         setInterval(() => this.readCurrentSong(), 10000);
+    }
+
+    setMediaHandlersForLockedScreen() {
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+            this.previousSong();
+        });
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+            this.nextSong();
+        });
+        navigator.mediaSession.setActionHandler('play', async () => {
+            await this.player.current.audio.current.play();
+        });
+        navigator.mediaSession.setActionHandler('pause', () => {
+            this.player.current.audio.current.pause();
+        });
     }
 
     readCurrentSong = () => {
@@ -87,7 +105,7 @@ class MusicPlayerBind extends Component {
         });
         // .then(response => { console.log('response', response); });
 
-        // this.setMediaHandlersForLockedScreen();
+        this.setMediaHandlersForLockedScreen();
     };
 
     onEnded = () => {
@@ -131,6 +149,10 @@ class MusicPlayerBind extends Component {
         }
     }
 
+    onPreviewPlayButtonClick = () => {
+        this.player.current.audio.current.play();
+    }
+
     render() {
         const musicItem = this.props.data.all[this.props.nowPlaying.item];
         let musicPath = musicItem && musicItem.path;
@@ -139,6 +161,9 @@ class MusicPlayerBind extends Component {
           <div ref={this.ref} 
             className={ ("audio_player" + (this.props.nowPlaying.item > '' ? ' playing' : ''))}>
             {/* <MainContent /> */}
+            <div className='preview_play_button'>
+                <MdPlayCircleOutline size={160} onClick={ this.onPreviewPlayButtonClick } />
+            </div>
             <div className='current_song'>
                 <GiMusicSpell className={ this.state.currentSong.range > secondsToSetSongActive ? '' : 'spinner'} /> { this.state.currentSong.name }
             </div>
@@ -157,7 +182,7 @@ class MusicPlayerBind extends Component {
                 showSkipControls={true}
                 customVolumeControls={[]}
                 customAdditionalControls={[]}
-                showJumpControls={false}
+                showJumpControls={true}
                 // showFilledVolume={true}
             />
             {/* { this.renderSound() } */}

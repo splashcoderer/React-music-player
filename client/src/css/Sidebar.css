@@ -243,7 +243,7 @@
 .sidebar-list {
     position: relative;
     float: left;
-    height: 81vh;
+    height: 78vh;
     /* height: calc(100vh - 150px); */
     width: 100%;
     margin: 0;
@@ -257,7 +257,7 @@
 @media not all and (min-resolution:.001dpcm) { 
     @supports (-webkit-appearance: none) {
         .sidebar-list {
-            height: 71vh;
+            height: 68vh;
         }
     }
 }

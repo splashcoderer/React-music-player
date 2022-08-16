@@ -17,7 +17,7 @@
 
 .now-playing-inner {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     height:10vh;
     width:100vw;
 }
@@ -54,7 +54,7 @@
 
 .song-text {
     position: absolute;
-    text-shadow: 3px 3px 3px black;
+    text-shadow: 3px 3px 8px black;
     height: 10vh;
     overflow: hidden;
 }
