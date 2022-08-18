@@ -103,7 +103,7 @@ const parseSongs = (dir, done) => {
                                     entry.title = tags.title;
                                 }
 
-                                entry.url = translit(entry.title).replace(/ /g, '_').replace(/[^a-zA-Z0-9_]/g,'_');
+                                entry.url = translit(fileName).replace(/ /g, '_').replace(/[^a-zA-Z0-9_]/g,'_').toLowerCase();
 
                                 newFileName = fileName + ext;
                                 // let newFileName = translit(fileName);
@@ -144,7 +144,7 @@ const parseSongs = (dir, done) => {
                                 entry.chords = fs.existsSync(chordsFileName) ? fs.readFileSync(chordsFileName, {encoding:'utf8', flag:'r'}) : '';
                                 // if (fs.existsSync(chordsFileName)) console.log('readFileSync', fs.readFileSync(chordsFileName, {encoding:'utf8', flag:'r'}));
 
-                                const id = sh.unique(musicPath) // Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+                                const id = entry.url; // sh.unique(musicPath) // Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
                                 results["all"][id] = entry;
 
                                 if(results["songs"][parent] === undefined)

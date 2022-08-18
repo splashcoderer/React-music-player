@@ -18,7 +18,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
     togglePlaylistSelect: viewActions.togglePlaylistSelectVisible,
     updateData: dataActions.updateData,
-    toggleSuccessModal: viewActions.toggleSuccessModal
+    openModalMessage: viewActions.openModalMessage
 }
 
 export class PlaylistSelectBind extends Component {
@@ -40,20 +40,18 @@ export class PlaylistSelectBind extends Component {
         .then(response => {
             this.props.updateData(response);
             this.props.togglePlaylistSelect(true);
-            this.props.toggleSuccessModal(false);
-            setTimeout(() => {
-                this.props.toggleSuccessModal(true);
-            },2000);
+            
+            this.props.openModalMessage({ text: 'Added' });
         });
     }
 
     renderPlaylists = () => {
         let playlists = Object.keys(this.props.data.playlists);
         let items = playlists.map(playlist => 
-            <li
-                key={playlist}
+            <li key={playlist}
                 onClick={this.addToPlaylist}>
-                {playlist}</li>
+                    {playlist}
+            </li>
         );
         return items;
     }

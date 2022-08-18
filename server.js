@@ -5,6 +5,8 @@ const parseSongs = require('./parse.js').parseSongs;
 
 const webSiteDir = './client/build';
 
+const MUSIC_FILENAME = './music_library.json';
+
 const handler = (req, res) => {
     // console.log('request', req.url, req.method, req.body);
     let dest = req.url;
@@ -23,9 +25,12 @@ const handler = (req, res) => {
         res.writeHead(200, headers);
     }
 
-    // console.log('req');
+    // console.log('method', req.method.toLowerCase(), dest);
     if(req.method.toLowerCase() === 'get') {
         switch(dest) {
+            case '/getPlaylists':
+                getPlaylists(req, res);
+                break;
             case '/getSongs':
                 getSongs(req, res);
                 break;
@@ -82,7 +87,7 @@ const fileTypes = {
 }
 
 const getSongs = (req, res) => {
-    let dataMap = fs.existsSync('./music_library.json') ? require("./music_library.json") : {
+    let dataMap = fs.existsSync(MUSIC_FILENAME) ? require(MUSIC_FILENAME) : {
         "songs":{},
         "albums":{},
         "artists":{},
@@ -107,14 +112,16 @@ const refreshData = (req, res) => {
         if (!fs.existsSync(webSiteDir + "/covers")){
             fs.mkdirSync(webSiteDir + "/covers");
         }
-        const playlists = fs.existsSync('./music_library.json') ? require('./music_library.json').playlists : [];
+        const playlists = fs.existsSync(MUSIC_FILENAME) ? require(MUSIC_FILENAME).playlists : {};
         console.log('parseSongs from ', webSiteDir + "/music/");
         parseSongs(webSiteDir + "/music/", (err, result) => {
             // console.log('parseSongs', err, result);
             if(err) throw err;
             let dataMap = result;
             dataMap["playlists"] = playlists;
-            fs.writeFile("./music_library.json", JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
+            console.log('dataMap', dataMap["playlists"]);
+
+            fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback => {
                 // console.log('music_library', dataMap);
                 // res.writeHead(200, {"Content-Type":"application/json"});
                 res.end(JSON.stringify(dataMap));
@@ -132,14 +139,21 @@ const refreshData = (req, res) => {
     }
 }
 
+const getPlaylists = (req, res) => {
+    let dataMap = fs.existsSync('./playlists.json') ? require("./playlists.json") : { "playlists": {} };
+    // console.log(JSON.stringify(dataMap));
+    res.end(JSON.stringify(dataMap));
+}
+
 const addPlaylist = (req, res) => {
     let form = new formidable.IncomingForm();
     form.parse(req, (err, fields) => {
         let name = fields.playlistName;
-        let dataMap = require("./music_library.json");
+        // if (!fs.existsSync(MUSIC_FILENAME)) fs.writeFileSync(MUSIC_FILENAME, JSON.stringify({ playlists: {} }));
+        let dataMap = require(MUSIC_FILENAME);
         dataMap["playlists"][name] = [];
-        fs.writeFile("music_library.json", JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
-            res.writeHead(200, {'Content-Type': 'application/json'});
+        fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
+            // res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(JSON.stringify(dataMap));
         });
     });
@@ -150,10 +164,10 @@ const addToPlaylist = (req, res) => {
     form.parse(req, (err, fields) => {
         let playlist = fields.playlist;
         let songs = fields.songs;
-        let dataMap = require("./music_library.json");
+        let dataMap = require(MUSIC_FILENAME);
         dataMap["playlists"][playlist] = dataMap["playlists"][playlist].concat(songs);
-        fs.writeFile("music_library.json", JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
-            res.writeHead(200, {'Content-Type': 'application/json'});
+        fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
+            // res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(JSON.stringify(dataMap));
         });
     });
@@ -164,10 +178,10 @@ const removeFromPlaylist = (req, res) => {
     form.parse(req, (err, fields) => {
         let playlist = fields.activeIndex;
         let number = fields.number;
-        let dataMap = require("./music_library.json");
+        let dataMap = require(MUSIC_FILENAME);
         dataMap["playlists"][playlist].splice(number, 1);
-        fs.writeFile("music_library.json", JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
-            res.writeHead(200, {'Content-Type': 'application/json'});
+        fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
+            // res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(JSON.stringify(dataMap));
         });
     });
@@ -177,10 +191,10 @@ const deletePlaylist = (req, res) => {
     let form = new formidable.IncomingForm();
     form.parse(req, (err, fields) => {
         let playlist = fields.playlist;
-        let dataMap = require("./music_library.json");
+        let dataMap = require(MUSIC_FILENAME);
         delete dataMap["playlists"][playlist];
-        fs.writeFile("music_library.json", JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
-            res.writeHead(200, {'Content-Type': 'application/json'});
+        fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback => {
+            // res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(JSON.stringify(dataMap));
         });
     });
@@ -191,12 +205,12 @@ const editPlaylistName = (req, res) => {
     form.parse(req, (err, fields) => {
         let oldName = fields.oldName;
         let newName = fields.newName;
-        let dataMap = require("./music_library.json");
+        let dataMap = require(MUSIC_FILENAME);
         let temp = dataMap["playlists"][oldName];
         delete dataMap["playlists"][oldName];
         dataMap["playlists"][newName] = temp;
-        fs.writeFile("music_library.json", JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
-            res.writeHead(200, {'Content-Type': 'application/json'});
+        fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
+            // res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(JSON.stringify(dataMap));
         });
     });

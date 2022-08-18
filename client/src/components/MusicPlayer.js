@@ -78,17 +78,19 @@ class MusicPlayerBind extends Component {
         .then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(response => {
-            response.song.range = getDateRange(response.song.time);
-            // console.log('readCurrentSong', response);
-            response && this.setState({ currentSong: response.song });
-            if (navigator.mediaSession.metadata) navigator.mediaSession.metadata.album = response.song.name;
+            if (response) {
+                response.song.range = getDateRange(response.song.time);
+                // console.log('readCurrentSong', response);
+                this.setState({ currentSong: response.song });
+                if (navigator.mediaSession.metadata) navigator.mediaSession.metadata.album = response.song.name;
+            }
         });
     }
 
     onPlayerPlay = () => {
         this.props.songPreview(false);
 
-        let musicItem = this.props.data.all[this.props.nowPlaying.item];
+        let musicItem = this.props.data.all && this.props.data.all[this.props.nowPlaying.item];
         if (musicItem) musicItem = musicItem.path.split('/')[2].replace('.mp3', '');
 
         document.title = musicItem + ' | pplayer.ru';
@@ -154,9 +156,12 @@ class MusicPlayerBind extends Component {
     }
 
     render() {
-        const musicItem = this.props.data.all[this.props.nowPlaying.item];
-        let musicPath = musicItem && musicItem.path;
-        musicPath = encodeURI(musicPath);
+        let musicPath = 'Reload player';
+        if (this.props.data.all) {
+            const musicItem = this.props.data.all[this.props.nowPlaying.item];
+            musicPath = musicItem && musicItem.path;
+            musicPath = encodeURI(musicPath);
+        }
         return(
           <div ref={this.ref} 
             className={ ("audio_player" + (this.props.nowPlaying.item > '' ? ' playing' : ''))}>

@@ -9,6 +9,7 @@ import {
     dataActions
 } from '../actions/actions.js';
 import { config } from '../config';
+import { HiPlus, HiMinus } from 'react-icons/hi';
 
 const mapStateToProps = (state, props) => ({
     visibleCategory: state.view.visibleCategory,
@@ -39,8 +40,9 @@ export class SidebarContentItem extends Component {
     }
 
     listItems = (category) => {
+        if (!category) return;
         let keys = Object.keys(category);
-        if(!keys.length) return;
+        if (!keys.length) return;
         keys.sort();
         const url = this.props.location.split('/');
         // console.log(url);
@@ -103,7 +105,7 @@ export class SidebarContentItem extends Component {
                         <div 
                             className="new-playlist-toggle"
                             onClick={this.toggleFormVisble}>
-                            { this.state.playlistFormVisible ? "HIDE" : "NEW" }
+                            { this.state.playlistFormVisible ? <HiMinus /> : <HiPlus /> }
                         </div>
                     }
                 </div>
@@ -144,7 +146,7 @@ export class SidebarContentBind extends Component {
             }
         }).then(res => res.json())
         .catch(error => console.error('Error:', error))
-        .then(response => { 
+        .then(response => {
             this.props.updateData(response)
         });
     }

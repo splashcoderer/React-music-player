@@ -49,12 +49,17 @@ export class MainContainerBind extends Component {
         // console.log('pathname', this.props.history.location.pathname.slice(1));
         this.props.changeLocation(this.props.history.location.pathname.slice(1) || 'songs');
 
-        this.getMusicLibrary()
-        .then(res => {
+        Promise.all([
+            this.getMusic(),
+            this.getPlaylists()])
+        .then(([music, playlists]) => {
             let data = {};
-            for(let key in res) {
-                data[key] = res[key]
+            for(let key in music) {
+                data[key] = music[key]
             }
+
+            // data.playlists = playlists.playlists;
+
             this.props.updateData(data);
             // console.log('data', this.props.data);
 
@@ -62,7 +67,7 @@ export class MainContainerBind extends Component {
             this.initAfterDataLoaded();
         })
         .catch(err =>  {
-            console.log(err)
+            console.log('Get data error', err)
         });
     }
 
@@ -103,8 +108,15 @@ export class MainContainerBind extends Component {
 
     onPreviewCloseClick = () => { this.props.songPreview(false) };
 
-    getMusicLibrary = async () => {
+    getMusic = async () => {
         const response = await fetch(config.baseUrl + '/getSongs');
+        const body = await response.json();
+        if (response.status !== 200) throw Error(body.message);
+        return body;
+    };
+
+    getPlaylists = async () => {
+        const response = await fetch(config.baseUrl + '/getPlaylists');
         const body = await response.json();
         if (response.status !== 200) throw Error(body.message);
         return body;
@@ -146,8 +158,11 @@ export class MainContainerBind extends Component {
     }
 
     render() {
-        const musicItem = this.props.data.all[this.props.nowPlaying.item];
-        let musicPath = (musicItem && musicItem.path.split('/')[2].replace('.mp3', '')) || 'Song not found';
+        let musicPath = 'Reload player';
+        if (this.props.data.all) {
+            const musicItem = this.props.data.all[this.props.nowPlaying.item];
+            musicPath = (musicItem && musicItem.path.split('/')[2].replace('.mp3', '')) || 'Song not found';
+        }
         // musicPath = encodeURI(musicPath);
         return(
         <div className={ "private_player" + (this.props.isPreviewVisible ? ' with_big_play_button' : '')}>
