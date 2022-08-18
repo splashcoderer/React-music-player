@@ -5,7 +5,7 @@ const parseSongs = require('./parse.js').parseSongs;
 
 const webSiteDir = './client/build';
 
-const MUSIC_FILENAME = './music_library.json';
+const MUSIC_FILENAME = './music';
 
 const handler = (req, res) => {
     // console.log('request', req.url, req.method, req.body);
@@ -86,9 +86,14 @@ const fileTypes = {
     '.ttf':'application/octet-stream'
 }
 
+const getDataMap = () => {
+    return JSON.parse(fs.readFileSync(MUSIC_FILENAME));
+    // return require(MUSIC_FILENAME);
+}
+
 const getSongs = (req, res) => {
-    let dataMap = fs.existsSync(MUSIC_FILENAME) ? require(MUSIC_FILENAME) : {
-        "songs":{},
+    let dataMap = fs.existsSync(MUSIC_FILENAME) ? getDataMap() : {
+        "songss": {},
         "albums":{},
         "artists":{},
         "playlists":{},
@@ -112,7 +117,7 @@ const refreshData = (req, res) => {
         if (!fs.existsSync(webSiteDir + "/covers")){
             fs.mkdirSync(webSiteDir + "/covers");
         }
-        const playlists = fs.existsSync(MUSIC_FILENAME) ? require(MUSIC_FILENAME).playlists : {};
+        const playlists = fs.existsSync(MUSIC_FILENAME) ? getDataMap().playlists : {};
         console.log('parseSongs from ', webSiteDir + "/music/");
         parseSongs(webSiteDir + "/music/", (err, result) => {
             // console.log('parseSongs', err, result);
@@ -122,7 +127,7 @@ const refreshData = (req, res) => {
             console.log('dataMap', dataMap["playlists"]);
 
             fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback => {
-                // console.log('music_library', dataMap);
+                // console.log('music', dataMap);
                 // res.writeHead(200, {"Content-Type":"application/json"});
                 res.end(JSON.stringify(dataMap));
             });
@@ -150,7 +155,7 @@ const addPlaylist = (req, res) => {
     form.parse(req, (err, fields) => {
         let name = fields.playlistName;
         // if (!fs.existsSync(MUSIC_FILENAME)) fs.writeFileSync(MUSIC_FILENAME, JSON.stringify({ playlists: {} }));
-        let dataMap = require(MUSIC_FILENAME);
+        let dataMap = getDataMap();
         dataMap["playlists"][name] = [];
         fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
             // res.writeHead(200, {'Content-Type': 'application/json'});
@@ -164,8 +169,8 @@ const addToPlaylist = (req, res) => {
     form.parse(req, (err, fields) => {
         let playlist = fields.playlist;
         let songs = fields.songs;
-        let dataMap = require(MUSIC_FILENAME);
-        dataMap["playlists"][playlist] = dataMap["playlists"][playlist].concat(songs);
+        let dataMap = getDataMap();
+        if (dataMap["playlists"][playlist]) dataMap["playlists"][playlist] = dataMap["playlists"][playlist].concat(songs);
         fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
             // res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(JSON.stringify(dataMap));
@@ -178,7 +183,7 @@ const removeFromPlaylist = (req, res) => {
     form.parse(req, (err, fields) => {
         let playlist = fields.activeIndex;
         let number = fields.number;
-        let dataMap = require(MUSIC_FILENAME);
+        let dataMap = getDataMap();
         dataMap["playlists"][playlist].splice(number, 1);
         fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
             // res.writeHead(200, {'Content-Type': 'application/json'});
@@ -191,7 +196,7 @@ const deletePlaylist = (req, res) => {
     let form = new formidable.IncomingForm();
     form.parse(req, (err, fields) => {
         let playlist = fields.playlist;
-        let dataMap = require(MUSIC_FILENAME);
+        let dataMap = getDataMap();
         delete dataMap["playlists"][playlist];
         fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback => {
             // res.writeHead(200, {'Content-Type': 'application/json'});
@@ -205,7 +210,7 @@ const editPlaylistName = (req, res) => {
     form.parse(req, (err, fields) => {
         let oldName = fields.oldName;
         let newName = fields.newName;
-        let dataMap = require(MUSIC_FILENAME);
+        let dataMap = getDataMap();
         let temp = dataMap["playlists"][oldName];
         delete dataMap["playlists"][oldName];
         dataMap["playlists"][newName] = temp;

@@ -9,7 +9,7 @@ if (fs.existsSync(webSiteDir + "/music")){
     }
     parseSongs(webSiteDir + "/music/", (err, result) => {
         if(err) throw err;
-        fs.writeFile("music_library.json", JSON.stringify(result, null, '  '), "utf8", callback=>{return});
+        fs.writeFile("music", JSON.stringify(result, null, '  '), "utf8", callback=>{return});
     });
     console.log("Finished");
 } else {
