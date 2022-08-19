@@ -18,7 +18,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
     togglePlaylistSelect: viewActions.togglePlaylistSelectVisible,
     updateData: dataActions.updateData,
-    openModalMessage: viewActions.openModalMessage
+    showMessage: viewActions.showMessage
 }
 
 export class PlaylistSelectBind extends Component {
@@ -41,7 +41,7 @@ export class PlaylistSelectBind extends Component {
             this.props.updateData(response);
             this.props.togglePlaylistSelect(true);
             
-            this.props.openModalMessage({ text: 'Added' });
+            this.props.showMessage({ text: 'Added' });
         });
     }
 

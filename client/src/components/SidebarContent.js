@@ -68,6 +68,7 @@ export class SidebarContentItem extends Component {
         if(!this.state.newPlaylistName) return;
         this.props.submitName(this.state.newPlaylistName);
         this.form.value = "";
+        this.toggleFormVisble();
     }
 
     renderForm = () => {

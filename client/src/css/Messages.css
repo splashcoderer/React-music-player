@@ -31,28 +31,13 @@
 }
 
 .message-inner {
-    position: relative;
-    height: 100px;
-    margin: 0;
-    padding: 0;
-}
-
-.message-check {
-    position: absolute;
-    top: 50%;
-    left: 0%;
-    width: 75px;
-    transform: translate(1px, -50%);
-    margin: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #message-text {
-    display: block;
-    position: absolute;
-    top: 50%;
-    transform: translate(0px, -50%);
-    text-align: left;
     font-size: 30px;
     color: #fff;
-    padding-left: 70px;
 }

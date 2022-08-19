@@ -30,9 +30,10 @@ export class CenterBind extends Component {
     let list = [];
     if (this.props.activeIndex) {
       list = this.props.queueVisible ?
-      this.props.queue :
-      this.props.data[this.props.activeCategory][this.props.activeIndex];
+        this.props.queue :
+        this.props.data[this.props.activeCategory][this.props.activeIndex];
     }
+
     return (
       <div className="view-outer">
         <div 

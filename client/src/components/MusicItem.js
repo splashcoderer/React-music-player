@@ -35,11 +35,12 @@ const mapDispatchToProps = {
   addToUpnext: queueActions.addToUpnext,
   setHold: dataActions.setHold,
   removeFromPlaylist: playlistActions.removeFromPlaylist,
+  removeFromPlaylistApi: playlistActions.removeFromPlaylistApi,
   togglePlaylistSelectVisible: viewActions.togglePlaylistSelectVisible,
   seekTo: playbackActions.seekTo,
   changeLocation: viewActions.changeLocation,
   toggleModalMessage: viewActions.toggleModalMessage,
-  openModalMessage: viewActions.openModalMessage
+  showMessage: viewActions.showMessage
 }
 
 export class MusicItemBind extends Component {
@@ -87,9 +88,9 @@ export class MusicItemBind extends Component {
         text: this.props.data.all[this.props.id].title,
         title: this.props.data.all[this.props.id].title
       });
-      this.props.openModalMessage({ text: 'Shared' });
+      this.props.showMessage({ text: 'Shared' });
     } else {
-      this.props.openModalMessage({
+      this.props.showMessage({
         time: 5,
         text: 'Share isn\'t supported by Browser' 
       });
@@ -102,9 +103,9 @@ export class MusicItemBind extends Component {
     // console.log(this.props.id, decodeURI(document.location.href.split('/').slice(0, -1).join('/')), this.props.data.all[this.props.id].title);
     if (navigator.clipboard) {
       navigator.clipboard.writeText(decodeURI(document.location.href.split('/').slice(0, -1).join('/')) + '/' + this.props.data.all[this.props.id].title);
-      this.props.openModalMessage({ text: 'Copied' });
+      this.props.showMessage({ text: 'Copied' });
     } else {
-      this.props.openModalMessage({
+      this.props.showMessage({
         time: 5,
         text: 'Copy not supported by Browser' 
       });
@@ -162,7 +163,8 @@ export class MusicItemBind extends Component {
       }
       this.props.removeFromQueue(this.props.index);
     } else {
-      this.props.removeFromPlaylist(this.props.activeIndex, this.props.index);
+      this.props.removeFromPlaylist(this.props.activeIndex, this.props.index, this.props);
+      this.props.showMessage({ text: 'Deleted', time: 3 });
     }
     e.stopPropagation();
   }
@@ -195,24 +197,26 @@ export class MusicItemBind extends Component {
     // const title = item.title.match(/[а-яё][А-ЯЁ]+|[a-z][A-Z]+/i) ? item.title : item.path;
 
     return (
-      <div 
-        className={musicItemClass} 
-        index={this.props.index} 
-        onClick={this.playItem}
-        ref={item => this.item = item}
-      >
-
-        { this.renderRemoveButton() }
-
-        {/* <div className="music-item-info info-padding"></div> */}
+      <div className='music-i'>
         <Link to={`/${url[0]}/${url[1]}/${item.title}`}>
-          <div className="music-item-info">
-            {/* <div className="music-item-title">{title.substr(item.title.indexOf('-') + 1)}</div> */}
-            <div className="music-item-title">{item.title.match(/[а-яё][А-ЯЁ]+|[a-z][A-Z]+/i) ? item.title.substr(item.title.indexOf('-') + 1) : item.path.substr(item.path.indexOf('-') + 1)}</div>
-            <div className="music-item-more">{item.artist} - {item.album}</div>
+          <div 
+            className={musicItemClass} 
+            index={this.props.index} 
+            onClick={this.playItem}
+            ref={item => this.item = item}
+          >
+
+            { this.renderRemoveButton() }
+
+            {/* <div className="music-item-info info-padding"></div> */}
+            
+              <div className="music-item-info">
+                {/* <div className="music-item-title">{title.substr(item.title.indexOf('-') + 1)}</div> */}
+                <div className="music-item-title">{item.title.match(/[а-яё][А-ЯЁ]+|[a-z][A-Z]+/i) ? item.title.substr(item.title.indexOf('-') + 1) : item.path.substr(item.path.indexOf('-') + 1)}</div>
+                <div className="music-item-more">{item.artist} - {item.album}</div>
+              </div>
           </div>
         </Link>
-      
         <div 
           className="music-item-options"
           onClick={this.toggleOptionView}

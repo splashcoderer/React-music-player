@@ -33,7 +33,7 @@ const view = handleActions(
             activeIndex: undefined
         }),
 
-        OPEN_MODAL_MESSAGE: (state, action) => ({
+        SHOW_MESSAGE: (state, action) => ({
             ...state,
             messageConfig: action.payload.messageConfig
         }),

@@ -228,6 +228,10 @@
   }
 }
 
+.music-i {
+  display: flex;
+}
+
 .music-item {
   display: flex;
   justify-content: space-between;
@@ -333,18 +337,14 @@
   /* float:left; */
   height: 60px;
   width: 5vw;
-  margin: 0;
-  padding: 0;
 }
 
 .options-container {
   display: none;
   position: absolute;
-  height: 250px;
+  /* height: 250px; */
   width: 150px;
   right: 25px;
-  margin: 0;
-  padding: 0;
   background-color: rgb(22, 44, 78);
   border-radius: 5px;
   -webkit-box-shadow: 0px 10px 37px -4px rgba(0,0,0,0.75);
@@ -385,25 +385,18 @@
 }
 
 .options-list {
-  position:absolute;
-  width:150px;
-  top:50%;
-  left:0;
-  transform:translate(0,-50%);
-  margin:0;
-  padding:0;
+  width: 100%;
+  /* transform:translate(0, -50%); */
 }
 
 .options-list div, div.download a {
-  position:relative;
-  height:40px;
-  width:150px;
-  line-height:40px;
-  text-align:center;
-  font-size:16px;
-  color:rgb(225, 221, 255);
-  margin:0;
-  padding:0;
+  position: relative;
+  height: 40px;
+  width: 150px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 16px;
+  color: rgb(225, 221, 255);
   cursor: pointer;
 }
 

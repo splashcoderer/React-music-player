@@ -36,7 +36,7 @@ export const dataActions = createActions(
 export const playlistActions = createActions(
     {
         ADD_TO_PLAYLIST: (name, songs) => ({ name, songs }),
-        REMOVE_FROM_PLAYLIST: (name, index) => ({ name, index })
+        REMOVE_FROM_PLAYLIST: (name, index, props) => ({ name, index, props })
     }
 )
 
@@ -57,7 +57,7 @@ export const viewActions = createActions(
         CHANGE_ACTIVE_INDEX: index => ({ index }),
         CHANGE_LOCATION: location => ({ location }),
         TOGGLE_PLAYLIST_SELECT_VISIBLE: visible => ({ visible }),
-        OPEN_MODAL_MESSAGE:  messageConfig => ({ messageConfig }),
+        SHOW_MESSAGE:  messageConfig => ({ messageConfig }),
         CLOSE_MODAL_MESSAGE:  messageConfig => ({ messageConfig }),
         TOGGLE_MODAL_MESSAGE: visible => ({ visible }),
         SHOW_PRELOADER: isPreloaderVisible => ({ isPreloaderVisible }),
