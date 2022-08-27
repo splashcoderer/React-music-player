@@ -212,7 +212,7 @@ export class MusicItemBind extends Component {
             
               <div className="music-item-info">
                 {/* <div className="music-item-title">{title.substr(item.title.indexOf('-') + 1)}</div> */}
-                <div className="music-item-title">{item.title.match(/[а-яё][А-ЯЁ]+|[a-z][A-Z]+/i) ? item.title.substr(item.title.indexOf('-') + 1) : item.path.substr(item.path.indexOf('-') + 1)}</div>
+                <div className="music-item-title">{item.title.match(/[а-яё][А-ЯЁ]+|[a-z][A-Z]+/i) ? item.title : item.path.substr(item.path.indexOf('-') + 1)}</div>
                 <div className="music-item-more">{item.artist} - {item.album}</div>
               </div>
           </div>

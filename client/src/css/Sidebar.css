@@ -242,6 +242,8 @@
     position: relative;
     float: left;
     height: 78vh;
+    /* top: -78vh;
+    transform: translateY(78vh); */
     /* height: calc(100vh - 150px); */
     width: 100%;
     margin: 0;
@@ -250,13 +252,28 @@
     overflow-y: scroll;
     transition: height .1s ease-in-out;
 }
+
+@supports (-webkit-touch-callout: none) {
+    /* CSS specific to iOS devices */ 
+}
 /* hack for Safari: */
 /* @supports (overflow:-webkit-marquee) and (justify-content:inherit)  */
 @media not all and (min-resolution:.001dpcm) { 
-    @supports (-webkit-appearance: none) {
+    @supports (-webkit-appearance: -apple-pay-button)  {
         .sidebar-list {
             height: 68vh;
         }
+    }
+}
+@media screen and (min-color-index: 0) and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
+    /* Safari and Chrome */
+    .sidebar-list {
+        /* height: 68vh; */
+    }
+    
+    /* Safari only override */
+    ::i-block-chrome,.sidebar-list {
+        /* height: 68vh; */
     }
 }
 
