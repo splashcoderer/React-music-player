@@ -71,7 +71,7 @@ export class MusicItemBind extends Component {
       if(this.props.shuffle) index = 0;
     }
     // console.log('playItem', this.props.id, index, this.props.data.all[this.props.id], this.props.location);
-    this.props.changeLocation(`${this.props.location.split('/')[0]}/${this.props.location.split('/')[1]}/${encodeURI(this.props.data.all[this.props.id].title)}`);
+    this.props.changeLocation(`${this.props.location.split('/')[0]}/${this.props.location.split('/')[1]}/${encodeURI(this.props.data.all[this.props.id].url)}`);
     this.props.setPlaying(this.props.id, index);
   }
 
@@ -102,7 +102,7 @@ export class MusicItemBind extends Component {
   copyLink = e => {
     // console.log(this.props.id, decodeURI(document.location.href.split('/').slice(0, -1).join('/')), this.props.data.all[this.props.id].title);
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(decodeURI(document.location.href.split('/').slice(0, -1).join('/')) + '/' + this.props.data.all[this.props.id].title);
+      navigator.clipboard.writeText(decodeURI(document.location.href.split('/').slice(0, -1).join('/')) + '/' + this.props.data.all[this.props.id].url);
       this.props.showMessage({ text: 'Copied' });
     } else {
       this.props.showMessage({
@@ -198,7 +198,7 @@ export class MusicItemBind extends Component {
 
     return (
       <div className='music-i'>
-        <Link to={`/${url[0]}/${url[1]}/${item.title}`}>
+        <Link to={`/${url[0]}/${url[1]}/${item.url}`}>
           <div 
             className={musicItemClass} 
             index={this.props.index} 

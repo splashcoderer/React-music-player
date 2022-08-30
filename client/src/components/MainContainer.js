@@ -90,7 +90,7 @@ export class MainContainerBind extends Component {
             if (list && url[2]) {
                 let item2play = '';
                 for (const key in this.props.data.all) {
-                    if (this.props.data.all[key].title === decodeURI(url[2])) item2play = key;
+                    if (this.props.data.all[key].url === decodeURI(url[2])) item2play = key;
                 }
         
                 const item2playIndex = list.findIndex(e => e === item2play);
