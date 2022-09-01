@@ -8,7 +8,7 @@ import {
   playlistActions,
   viewActions
 } from '../actions/actions.js';
-import { shuffle } from '../tools.js';
+// import { shuffle } from '../tools.js';
 import { MdCancel, MdMoreHoriz, MdContentCopy } from 'react-icons/md';
 import { FiShare } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
@@ -22,7 +22,8 @@ const mapStateToProps = (state, props) => ({
   activeIndex: state.view.activeIndex,
   activeSong: state.nowPlaying.activeSong,
   shuffle: state.settings.shuffle,
-  location: state.view.location
+  location: state.view.location,
+  nowPlaying: state.nowPlaying,
 })
 
 const mapDispatchToProps = {
@@ -55,20 +56,19 @@ export class MusicItemBind extends Component {
   }
 
   getSongList = () => {
-    let list = this.props.data[this.props.activeCategory][this.props.activeIndex];
-    if(this.props.shuffle) {
-      list = shuffle(list);
-      list.splice(0,0,this.props.id);
-    }
+    // const list = this.props.data[this.props.activeCategory][this.props.activeIndex];
+    const list = this.props.queue;
+    list.unshift(this.props.id);
+    // if (this.props.shuffle) { list = shuffle(list); list.unshift(this.props.id); }
     return list;
   }
 
   playItem = () => {
     let index = this.props.index;
-    if(!this.props.queueVisible){
+    if (!this.props.queueVisible) {
       let list = this.getSongList();
-      this.props.setQueue(list);   // add playing song with all from this folder to queue (that's weird)
-      if(this.props.shuffle) index = 0;
+      this.props.setQueue(list);
+      // if (this.props.shuffle) index = 0;
     }
     // console.log('playItem', this.props.id, index, this.props.data.all[this.props.id], this.props.location);
     this.props.changeLocation(`${this.props.location.split('/')[0]}/${this.props.location.split('/')[1]}/${encodeURI(this.props.data.all[this.props.id].url)}`);
@@ -122,14 +122,14 @@ export class MusicItemBind extends Component {
   }
 
   addToQueue = e => {
-    if(this.props.queue.length === 0) this.props.setPlaying(this.props.id, 0);
+    if(!this.props.queue.length) this.props.setPlaying(this.props.id, 0);
     this.props.addToQueue([this.props.id]);
     this.toggleOptionView(e);
     e.stopPropagation();
   }
 
   playNext = e => {
-    if(this.props.queue.length === 0) this.props.setPlaying(this.props.id, 0);
+    if(!this.props.queue.length) this.props.setPlaying(this.props.id, 0);
     this.props.addToUpnext([this.props.id], this.props.activeSong);
     this.toggleOptionView(e);
     e.stopPropagation();
@@ -148,6 +148,7 @@ export class MusicItemBind extends Component {
   }
 
   removeItem = (e) => {
+    this.toggleOptionView(e);
     if(this.props.queueVisible){
       if(this.props.index < this.props.activeSong) {
         this.props.setActive(this.props.activeSong - 1);
@@ -186,8 +187,8 @@ export class MusicItemBind extends Component {
     const item = this.props.data.all[this.props.id];
 
     let musicItemClass = "music-item";
-    
-    if(this.props.index === this.props.activeSong/* || decodeURI(url[2]) === item.title *//* && this.props.queueVisible*/) {
+
+    if(item.url === this.props.nowPlaying.item/*this.props.index === this.props.activeSong*//* || decodeURI(url[2]) === item.url *//* && this.props.queueVisible*/) {
       musicItemClass += " music-item-active"
     }
     let optionsContainerClass = "options-container " + this.state.optionsPositionClass;
@@ -227,14 +228,14 @@ export class MusicItemBind extends Component {
 
               <div className="options-list options-list-index">
                 <div 
-                  className="add-to-playlist"
-                  onClick={this.addToPlaylist}>
-                    Add to Playlist
-                </div>
-                <div 
                   className="add-to-queue"
                   onClick={this.addToQueue}>
                     Add to Queue
+                </div>
+                <div 
+                  className="add-to-playlist"
+                  onClick={this.addToPlaylist}>
+                    Add to Playlist
                 </div>
                 <div 
                   className="play-next"

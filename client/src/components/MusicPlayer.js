@@ -53,7 +53,7 @@ class MusicPlayerBind extends Component {
         this.setMediaHandlersForLockedScreen();
 
         this.readCurrentSong();
-        setInterval(() => this.readCurrentSong(), 10000);
+        setInterval(() => this.readCurrentSong(), 20000);
     }
 
     setMediaHandlersForLockedScreen() {
@@ -138,11 +138,13 @@ class MusicPlayerBind extends Component {
             nextSongIndex = getRandomArbitrary(0, this.props.queue.length);
             if (nextSongIndex === index) nextSongIndex = 0;
         }
+        
         if (this.props.loop && !isClick) {
             nextSongIndex = index;
             this.props.endPlayback();
         }
-        if(index === this.props.queue.length - 1) {
+
+        if (!this.props.shuffle && index === this.props.queue.length - 1) {
             this.props.endPlayback();
             this.props.setQueue([]);
         } else {
@@ -156,9 +158,11 @@ class MusicPlayerBind extends Component {
     }
 
     render() {
+        // if (this.props.nowPlaying.playing === null && !this.props.nowPlaying.item) return;
         let musicPath = 'Reload player';
         if (this.props.data.all) {
-            const musicItem = this.props.data.all[this.props.nowPlaying.item];
+            // console.log('render', this.props.nowPlaying, this.props.data);
+            const musicItem = this.props.data.all[this.props.nowPlaying.item];  // TODO: figure out why item sometimes undefined
             musicPath = musicItem && musicItem.path;
             musicPath = encodeURI(musicPath);
         }

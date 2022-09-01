@@ -31,7 +31,7 @@ export class CenterBind extends Component {
     if (this.props.activeIndex) {
       list = this.props.queueVisible ?
         this.props.queue :
-        this.props.data[this.props.activeCategory][this.props.activeIndex];
+        this.props.data[this.props.activeCategory] && this.props.data[this.props.activeCategory][this.props.activeIndex];
     }
 
     return (

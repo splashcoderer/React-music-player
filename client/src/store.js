@@ -27,7 +27,7 @@ let initState = {
         successModal: false,
         location: '/'
     },
-    nowPlaying:{
+    nowPlaying: {
         playing: false,
         activeSong: undefined,
         item: undefined,

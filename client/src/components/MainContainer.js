@@ -95,7 +95,7 @@ export class MainContainerBind extends Component {
         
                 const item2playIndex = list.findIndex(e => e === item2play);
 
-                this.props.setQueue(list);
+                this.props.setQueue([list[item2playIndex]]);
                 this.props.setPlaying(item2play, item2playIndex);
         
                 // setTimeout(() => {

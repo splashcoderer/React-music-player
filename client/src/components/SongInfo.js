@@ -52,9 +52,15 @@ export const RefreshButton = connect(
     mapDispatchToPropsRefresh
 )(RefreshButtonBind)
 
+
 const mapStateToProps = (state, props) => ({
     queue: state.queue,
+    queueVisible: state.settings.queue,
     activeSong: state.nowPlaying.activeSong,
+    activeCategory: state.view.activeCategory,
+    visibleCategory: state.view.visibleCategory,
+    activeIndex: state.view.activeIndex,
+    nowPlaying: state.nowPlaying,
     data: state.data.all
 });
 
@@ -76,14 +82,25 @@ class SongInfoBind extends Component {
     }
 
     render() {
+        // const list = this.props.queueVisible ? this.props.queue : this.props.data[this.props.activeCategory][this.props.activeIndex];
+        // console.log(this.props.data, this.props.activeSong, this.props.nowPlaying);
+        
+        let item = {};
+        // if (!this.props.data || !this.props.nowPlaying.item) return;
+        if (this.props.data && this.props.nowPlaying.item) {
+            // item = this.props.queueVisible ? this.props.data[this.props.nowPlaying.item] : this.props.data[this.props.nowPlaying.item];
+            item = this.props.data[this.props.nowPlaying.item];
+        }
+
+        if (!item) item = {};
+
         let coverPath = window.location.origin;
-        let id = this.props.queue[this.props.activeSong];
-        let item = id ? this.props.data[id] : {};
         if(this.props.activeSong !== undefined && item.cover) {
             coverPath += "/covers" + item.cover;
         } else {
             coverPath += "/album.jpg";
         }
+
         return(
             <div className="song-info">
                 <div className="song-chords">
