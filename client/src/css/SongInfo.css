@@ -1,3 +1,34 @@
+.song-info {
+    position:relative;
+}
+
+.song-text {
+    position: absolute;
+    text-shadow: 3px 3px 8px black;
+    height: 10vh;
+    overflow: hidden;
+    color: #fff;
+}
+
+.song-title, .song-artist {
+    text-align: left;
+    
+}
+
+.song-title {
+    font-size: 18px;
+}
+
+.song-artist {
+    font-size: 16px;
+    opacity: .8;
+}
+
+.song-year {
+    font-size: 12px;
+    opacity: .7;
+}
+
 .song-chords {
     color: white;
     position: absolute;

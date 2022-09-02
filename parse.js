@@ -92,6 +92,7 @@ const parseSongs = (dir, done) => {
                             .then(function (metadata) {
 
                                 let tags = metadata.common;
+                                // console.log('tags ', tags);
 
                                 let entry = {};
                                 
@@ -102,6 +103,8 @@ const parseSongs = (dir, done) => {
                                 } else {
                                     entry.title = tags.title;
                                 }
+
+                                entry.year = tags.year || '';
 
                                 entry.url = translit(fileName).replace(/ /g, '_').replace(/[^a-zA-Z0-9_]/g,'_').toLowerCase();
 

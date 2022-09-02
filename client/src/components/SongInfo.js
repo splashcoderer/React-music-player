@@ -116,6 +116,7 @@ class SongInfoBind extends Component {
                     <div className="song-artist">
                         { item.artist }
                     </div>
+                    <div className="song-year">{ item.year }</div>
                     {this.props.activeSong === undefined && <RefreshButton />}
                 </div>
             </div>
