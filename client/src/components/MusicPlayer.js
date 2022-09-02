@@ -118,24 +118,38 @@ class MusicPlayerBind extends Component {
         this.nextSong(true);
     }
 
-    previousSong = () => {
-        if(this.props.nowPlaying.item === undefined) return;
-        if((this.props.nowPlaying.currentTime / 1000) > 2 || !this.props.nowPlaying.activeSong) {
-            this.props.seekTo(0);
-        } else {
-            let activeSong = this.props.nowPlaying.activeSong - 1;
-            this.props.setPlaying(this.props.queue[activeSong], activeSong);
-        }
+    previousSong = (isClick) => {
+        if (this.props.nowPlaying.item === undefined) return;
+        const playingArray = this.props.queueVisible ? this.props.queue.length : this.props.data[this.props.activeCategory][this.props.activeIndex];
+        // console.log(playingArray, this.props.nowPlaying.currentTime / 1000, this.props.nowPlaying.activeSong);
+        let prevSongIndex = 0;
+
+        // TODO: figure out why seekTo doesn't work
+        // if ((this.props.nowPlaying.currentTime / 1000) > 5 || !this.props.nowPlaying.activeSong) {
+        //     this.props.seekTo(0);
+        //     console.log('seek');
+        // } else 
+        // {
+            if (!this.props.shuffle) {
+                prevSongIndex = this.props.nowPlaying.activeSong > 0 ? this.props.nowPlaying.activeSong - 1 : 0;
+                if (isClick && this.props.loop) prevSongIndex = playingArray.length - 1;
+            } else {
+                prevSongIndex = getRandomArbitrary(0, playingArray.length);
+            }
+            this.props.setPlaying(playingArray[prevSongIndex], prevSongIndex);
+        // }
     }
 
     nextSong = (isClick) => {
-        if(this.props.nowPlaying.item === undefined) return;
+        if (this.props.nowPlaying.item === undefined) return;
         let index = this.props.nowPlaying.activeSong;
         let nextSongIndex = 0;
+        const playingArray = this.props.queueVisible ? this.props.queue.length : this.props.data[this.props.activeCategory][this.props.activeIndex];
+
         if (!this.props.shuffle) {
             nextSongIndex = index + 1;
         } else {
-            nextSongIndex = getRandomArbitrary(0, this.props.queue.length);
+            nextSongIndex = getRandomArbitrary(0, playingArray.length);
             if (nextSongIndex === index) nextSongIndex = 0;
         }
         
@@ -143,17 +157,19 @@ class MusicPlayerBind extends Component {
             nextSongIndex = index;
             this.props.endPlayback();
         }
+        if (isClick && this.props.loop && index === playingArray.length - 1) nextSongIndex = 0;
+        // console.log(nextSongIndex, index, playingArray);
 
-        if (!this.props.shuffle && index === this.props.queue.length - 1) {
+        if (!this.props.shuffle && index === playingArray.length - 1 && !isClick) {
             this.props.endPlayback();
             this.props.setQueue([]);
         } else {
-            let item = this.props.queue[nextSongIndex];
-            this.props.setPlaying(item, nextSongIndex);
+            this.props.setPlaying(playingArray[nextSongIndex], nextSongIndex);
         }
     }
 
     onPreviewPlayButtonClick = () => {
+        // console.log(this.player.current.audio.current);
         this.player.current.audio.current.play();
     }
 
@@ -180,6 +196,7 @@ class MusicPlayerBind extends Component {
                 ref={this.player}
                 autoPlay
                 src={window.location.origin + "/music" + musicPath}
+                preload='metadata'
                 onPlay={this.onPlayerPlay}
                 onPlaying={e => this.props.setDuration(e.timeStamp)}
                 onListen={e => this.props.updateTime(e.timeStamp)}
