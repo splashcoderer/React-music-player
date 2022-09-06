@@ -71,6 +71,25 @@ class MusicPlayerBind extends Component {
         });
     }
 
+    setMediaInfoForLockedScreen() {
+        let coverPath = window.location.origin;
+
+        let item = {};
+        if (this.props.data.all && this.props.nowPlaying.item) {
+            item = this.props.data.all[this.props.nowPlaying.item];
+        }
+        if (this.props.activeSong && item.cover) coverPath += "/covers" + item.cover; else coverPath += "/album.jpg";
+
+        navigator.mediaSession.metadata = new window.MediaMetadata({
+            title: item.artist + ' - ' + item.title,
+            // artist: item.artist,
+            // album: '',
+            artwork: [
+              { src: coverPath, sizes: '512x512', type: 'image/png' },
+            ]
+        });
+    }
+
     readCurrentSong = () => {
         fetch(config.baseUrl + '/readCurrentSong', {
             method: 'GET'
@@ -108,6 +127,7 @@ class MusicPlayerBind extends Component {
         // .then(response => { console.log('response', response); });
 
         this.setMediaHandlersForLockedScreen();
+        this.setMediaInfoForLockedScreen();
     };
 
     onEnded = () => {

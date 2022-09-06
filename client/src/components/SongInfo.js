@@ -65,21 +65,6 @@ const mapStateToProps = (state, props) => ({
 });
 
 class SongInfoBind extends Component {
-    componentDidUpdate() {
-        let coverPath = window.location.origin;
-        let id = this.props.queue[this.props.activeSong];
-        let item = id ? this.props.data[id] : {};
-        if (this.props.activeSong && item.cover) coverPath += "/covers" + item.cover; else coverPath += "/album.jpg";
-
-        navigator.mediaSession.metadata = new window.MediaMetadata({
-            title: item.artist + ' - ' + item.title,
-            // artist: item.artist,
-            // album: '',
-            artwork: [
-              { src: coverPath, sizes: '512x512', type: 'image/png' },
-            ]
-        });
-    }
 
     render() {
         // const list = this.props.queueVisible ? this.props.queue : this.props.data[this.props.activeCategory][this.props.activeIndex];
