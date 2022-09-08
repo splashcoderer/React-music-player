@@ -132,7 +132,9 @@ class MusicPlayerBind extends Component {
         // console.log('musicItem', musicItem, this.props.nowPlaying, this.props.data);
 
         // this.props.changeLocation(`/${this.props.location.split('/')[0]}/${this.props.location.split('/')[1]}/${encodeURI(this.props.data.all[this.props.nowPlaying.item].url)}`);
-        history.replace({ pathname: `/${this.props.location.split('/')[0]}/${(this.props.location.split('/')[1])}/${(this.props.data.all[this.props.nowPlaying.item].url)}` })
+        if (this.props.nowPlaying.item) {
+            history.replace({ pathname: `/${this.props.location.split('/')[0]}/${(this.props.location.split('/')[1])}/${(this.props.data.all[this.props.nowPlaying.item].url)}` })
+        }
 
         this.setMediaHandlersForLockedScreen();
         this.setMediaInfoForLockedScreen();
@@ -148,7 +150,7 @@ class MusicPlayerBind extends Component {
 
     previousSong = (isClick) => {
         if (this.props.nowPlaying.item === undefined) return;
-        const playingArray = this.props.queueVisible ? this.props.queue.length : this.props.data[this.props.activeCategory][this.props.activeIndex];
+        const playingArray = this.props.queueVisible ? this.props.queue : this.props.data[this.props.activeCategory][this.props.activeIndex];
         // console.log(playingArray, this.props.nowPlaying.currentTime / 1000, this.props.nowPlaying.activeSong);
         let prevSongIndex = 0;
 
@@ -159,7 +161,8 @@ class MusicPlayerBind extends Component {
         // } else 
         // {
             if (!this.props.shuffle) {
-                prevSongIndex = this.props.nowPlaying.activeSong > 0 ? this.props.nowPlaying.activeSong - 1 : 0;
+                // prevSongIndex = this.props.nowPlaying.activeSong > 0 ? this.props.nowPlaying.activeSong - 1 : 0;
+                prevSongIndex = playingArray.findIndex(e => e === this.props.nowPlaying.item);
                 if (isClick && this.props.loop) prevSongIndex = playingArray.length - 1;
             } else {
                 prevSongIndex = getRandomArbitrary(0, playingArray.length);
@@ -170,9 +173,10 @@ class MusicPlayerBind extends Component {
 
     nextSong = (isClick) => {
         if (this.props.nowPlaying.item === undefined) return;
-        let index = this.props.nowPlaying.activeSong;
+        let index = 0; // this.props.nowPlaying.activeSong;
         let nextSongIndex = 0;
-        const playingArray = this.props.queueVisible ? this.props.queue.length : this.props.data[this.props.activeCategory][this.props.activeIndex];
+        const playingArray = this.props.queueVisible ? this.props.queue : this.props.data[this.props.activeCategory][this.props.activeIndex];
+        index = playingArray.findIndex(e => e === this.props.nowPlaying.item);
 
         if (!this.props.shuffle) {
             nextSongIndex = index + 1;
@@ -186,11 +190,11 @@ class MusicPlayerBind extends Component {
             this.props.endPlayback();
         }
         if (isClick && this.props.loop && index === playingArray.length - 1) nextSongIndex = 0;
-        // console.log(nextSongIndex, index, playingArray);
+        // console.log(nextSongIndex, index, playingArray.length);
 
-        if (!this.props.shuffle && index === playingArray.length - 1 && !isClick) {
+        if (!this.props.shuffle && !this.props.loop && index === playingArray.length - 1) {
             this.props.endPlayback();
-            this.props.setQueue([]);
+            if (!this.props.queueVisible) this.props.setQueue([]);
         } else {
             this.props.setPlaying(playingArray[nextSongIndex], nextSongIndex);
         }

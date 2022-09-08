@@ -92,7 +92,7 @@ export class MusicItemBind extends Component {
     } else {
       this.props.showMessage({
         time: 5,
-        text: 'Share isn\'t supported by Browser' 
+        text: 'Share isn\'t supported by Browser, use Browser share button' 
       });
     }
     this.toggleOptionView(e);
@@ -122,15 +122,18 @@ export class MusicItemBind extends Component {
   }
 
   addToQueue = e => {
-    if(!this.props.queue.length) this.props.setPlaying(this.props.id, 0);
+    if (!this.props.queue.length) this.props.setPlaying(this.props.id, 0);
     this.props.addToQueue([this.props.id]);
+    this.props.showMessage({ text: 'Added to Queue end' });
     this.toggleOptionView(e);
     e.stopPropagation();
   }
 
-  playNext = e => {
-    if(!this.props.queue.length) this.props.setPlaying(this.props.id, 0);
-    this.props.addToUpnext([this.props.id], this.props.activeSong);
+  addToQueuePlayNext = e => {
+    if (!this.props.queue.length) this.props.setPlaying(this.props.id, 0);
+    const indexInQueue = this.props.queue.findIndex(e => e === this.props.nowPlaying.item);
+    this.props.addToUpnext([this.props.id], indexInQueue);
+    this.props.showMessage({ text: 'Added to Queue next' });
     this.toggleOptionView(e);
     e.stopPropagation();
   }
@@ -140,7 +143,7 @@ export class MusicItemBind extends Component {
     const optionsVisible = !this.state.optionsVisible;
     this.setState({optionsVisible});
     const top = this.item.getBoundingClientRect().top;
-    if(top < 440) {
+    if (top < 440) {
       this.setState({optionsPositionClass:"options-container-bottom"});
     } else {
       this.setState({optionsPositionClass:"options-container-top"})
@@ -149,13 +152,13 @@ export class MusicItemBind extends Component {
 
   removeItem = (e) => {
     this.toggleOptionView(e);
-    if(this.props.queueVisible){
-      if(this.props.index < this.props.activeSong) {
+    if (this.props.queueVisible){
+      if (this.props.index < this.props.activeSong) {
         this.props.setActive(this.props.activeSong - 1);
       }
-      if(this.props.index === this.props.activeSong) {
+      if (this.props.index === this.props.activeSong) {
         const index = this.props.index;
-        if(index === this.props.queue.length - 1) {
+        if (index === this.props.queue.length - 1) {
           this.props.endPlayback();
           this.props.setQueue([]);
         } else {
@@ -165,13 +168,13 @@ export class MusicItemBind extends Component {
       this.props.removeFromQueue(this.props.index);
     } else {
       this.props.removeFromPlaylist(this.props.activeIndex, this.props.index, this.props);
-      this.props.showMessage({ text: 'Deleted', time: 3 });
+      this.props.showMessage({ text: 'Deleted', time: 2 });
     }
     e.stopPropagation();
   }
 
   renderRemoveButton = () => {
-    if(this.props.activeCategory === "playlists" || this.props.queueVisible) {
+    if (this.props.activeCategory === "playlists" || this.props.queueVisible) {
       return (
         <div 
           className="music-item-delete"
@@ -188,7 +191,7 @@ export class MusicItemBind extends Component {
 
     let musicItemClass = "music-item";
 
-    if(item.url === this.props.nowPlaying.item/*this.props.index === this.props.activeSong*//* || decodeURI(url[2]) === item.url *//* && this.props.queueVisible*/) {
+    if (item.url === this.props.nowPlaying.item/*this.props.index === this.props.activeSong*//* || decodeURI(url[2]) === item.url *//* && this.props.queueVisible*/) {
       musicItemClass += " music-item-active"
     }
     let optionsContainerClass = "options-container " + this.state.optionsPositionClass;
@@ -227,20 +230,20 @@ export class MusicItemBind extends Component {
             <div className="options-container-inner">
 
               <div className="options-list options-list-index">
-                <div 
+                {!this.props.queueVisible && <div 
                   className="add-to-queue"
                   onClick={this.addToQueue}>
                     Add to Queue
-                </div>
+                </div>}
+                {!this.props.queueVisible && <div 
+                  className="play-next"
+                  onClick={this.addToQueuePlayNext}>
+                    Play Next in Queue
+                </div>}
                 <div 
                   className="add-to-playlist"
                   onClick={this.addToPlaylist}>
                     Add to Playlist
-                </div>
-                <div 
-                  className="play-next"
-                  onClick={this.playNext}>
-                    Play Next
                 </div>
                 <div 
                   className="download"

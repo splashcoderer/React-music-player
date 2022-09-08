@@ -7,11 +7,14 @@ const queue = handleActions(
             ...action.payload.songs
         ]),
 
-        ADD_TO_UPNEXT: (state, action) => ([
-            ...state.slice(0, action.payload.index + 1),
-            ...action.payload.songs,
-            ...state.slice(action.payload.index + 1)
-        ]),
+        ADD_TO_UPNEXT: (state, action) => {
+            // console.log(state, action.payload);
+            return ([
+                ...state.slice(0, action.payload.index + 1),
+                ...action.payload.songs,
+                ...state.slice(action.payload.index + 1)
+            ])
+        },
 
         REMOVE_FROM_QUEUE: (state, action) => ([
             ...state.slice(0, action.payload.index),

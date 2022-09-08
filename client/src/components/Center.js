@@ -33,7 +33,7 @@ export class CenterBind extends Component {
         this.props.queue :
         this.props.data[this.props.activeCategory] && this.props.data[this.props.activeCategory][this.props.activeIndex];
     }
-    list.sort();
+    if (!this.props.queueVisible) list.sort();
 
     return (
       <div className="view-outer">

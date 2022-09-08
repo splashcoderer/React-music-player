@@ -12,10 +12,13 @@ const view = handleActions(
             visibleCategory: action.payload.category
         }),
 
-        CHANGE_ACTIVE_INDEX: (state, action) => ({
-            ...state,
-            activeIndex: action.payload.index
-        }),
+        CHANGE_ACTIVE_INDEX: (state, action) => {
+            // console.log('CHANGE_ACTIVE_INDEX', state, action);
+            return ({
+                ...state,
+                activeIndex: action.payload.index
+            })
+        },
 
         CHANGE_LOCATION: (state, action) => ({
             ...state,
