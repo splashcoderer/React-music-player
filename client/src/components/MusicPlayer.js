@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AudioPlayer from 'react-h5-audio-player';
+import { createBrowserHistory } from 'history';
 
 import '../css/MusicPlayer.css';
 import {
@@ -35,9 +36,12 @@ const mapDispatchToProps = {
     seekTo: playbackActions.seekTo,
     setQueue: queueActions.setQueue,
     songPreview: viewActions.songPreview,
+    changeLocation: viewActions.changeLocation
   }
 
-  const secondsToSetSongActive = 300;
+const secondsToSetSongActive = 300;
+
+const history = createBrowserHistory();
 
 class MusicPlayerBind extends Component {
     constructor(props) {
@@ -125,6 +129,10 @@ class MusicPlayerBind extends Component {
             this.setState({ currentSong: { name: musicItem } });
         });
         // .then(response => { console.log('response', response); });
+        // console.log('musicItem', musicItem, this.props.nowPlaying, this.props.data);
+
+        // this.props.changeLocation(`/${this.props.location.split('/')[0]}/${this.props.location.split('/')[1]}/${encodeURI(this.props.data.all[this.props.nowPlaying.item].url)}`);
+        history.replace({ pathname: `/${this.props.location.split('/')[0]}/${(this.props.location.split('/')[1])}/${(this.props.data.all[this.props.nowPlaying.item].url)}` })
 
         this.setMediaHandlersForLockedScreen();
         this.setMediaInfoForLockedScreen();
