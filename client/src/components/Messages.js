@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import '../css/Messages.css';
-import { MdCheck } from 'react-icons/md';
+import { MdCheck, MdErrorOutline } from 'react-icons/md';
 import { viewActions } from '../actions/actions';
 
 const mapStateToProps = (state, props) => ({
@@ -31,7 +31,7 @@ export class MessagesBind extends Component {
         return(
             <div className="message">
                 <div className="message-inner">
-                    <MdCheck className="message-check" size="4em" />
+                    {!this.props.messageConfig.error ? <MdCheck className="message-check" size="4em" /> : <MdErrorOutline size="4em" />}
                     <span id="message-text">{this.props.messageConfig.text}</span>
                 </div>
             </div>

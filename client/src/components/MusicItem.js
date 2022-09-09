@@ -106,7 +106,7 @@ export class MusicItemBind extends Component {
       this.props.showMessage({ text: 'Copied' });
     } else {
       this.props.showMessage({
-        time: 5,
+        time: 3,
         text: 'Copy not supported by Browser' 
       });
     }

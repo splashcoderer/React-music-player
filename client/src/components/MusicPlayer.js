@@ -36,7 +36,8 @@ const mapDispatchToProps = {
     seekTo: playbackActions.seekTo,
     setQueue: queueActions.setQueue,
     songPreview: viewActions.songPreview,
-    changeLocation: viewActions.changeLocation
+    changeLocation: viewActions.changeLocation,
+    showMessage: viewActions.showMessage
   }
 
 const secondsToSetSongActive = 300;
@@ -162,8 +163,12 @@ class MusicPlayerBind extends Component {
         // {
             if (!this.props.shuffle) {
                 // prevSongIndex = this.props.nowPlaying.activeSong > 0 ? this.props.nowPlaying.activeSong - 1 : 0;
-                prevSongIndex = playingArray.findIndex(e => e === this.props.nowPlaying.item);
-                if (isClick && this.props.loop) prevSongIndex = playingArray.length - 1;
+                prevSongIndex = playingArray.findIndex(e => e === this.props.nowPlaying.item) - 1;
+                if (isClick && this.props.loop && prevSongIndex === -1) prevSongIndex = playingArray.length - 1;
+                if (prevSongIndex === -1) {
+                    prevSongIndex = 0; // prevent playback end on first item
+                    this.props.showMessage({ text: 'Enable Loop', error: true });
+                }
             } else {
                 prevSongIndex = getRandomArbitrary(0, playingArray.length);
             }
@@ -190,14 +195,19 @@ class MusicPlayerBind extends Component {
             this.props.endPlayback();
         }
         if (isClick && this.props.loop && index === playingArray.length - 1) nextSongIndex = 0;
+        if (nextSongIndex === playingArray.length) {
+            nextSongIndex = playingArray.length - 1;
+            this.props.showMessage({ text: 'Enable Loop', error: true });
+        }
         // console.log(nextSongIndex, index, playingArray.length);
 
-        if (!this.props.shuffle && !this.props.loop && index === playingArray.length - 1) {
-            this.props.endPlayback();
-            if (!this.props.queueVisible) this.props.setQueue([]);
-        } else {
-            this.props.setPlaying(playingArray[nextSongIndex], nextSongIndex);
-        }
+        this.props.setPlaying(playingArray[nextSongIndex], nextSongIndex);
+        // if (!this.props.shuffle && !this.props.loop && index === playingArray.length - 1) {
+        //     this.props.endPlayback();
+        //     if (!this.props.queueVisible) this.props.setQueue([]);
+        // } else {
+        //     this.props.setPlaying(playingArray[nextSongIndex], nextSongIndex);
+        // }
     }
 
     onPreviewPlayButtonClick = () => {

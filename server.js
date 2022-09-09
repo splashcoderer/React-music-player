@@ -170,6 +170,11 @@ const addToPlaylist = (req, res) => {
         let playlist = fields.playlist;
         let songs = fields.songs;
         let dataMap = getDataMap();
+
+        if (dataMap["playlists"][playlist].includes(songs[0])) {
+            res.end(JSON.stringify(dataMap));
+        }
+
         if (dataMap["playlists"][playlist]) dataMap["playlists"][playlist] = dataMap["playlists"][playlist].concat(songs);
         fs.writeFile(MUSIC_FILENAME, JSON.stringify(dataMap, null, '  '), "utf8", callback=>{
             // res.writeHead(200, {'Content-Type': 'application/json'});
