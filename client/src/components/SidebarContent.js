@@ -14,7 +14,8 @@ import { HiPlus, HiMinus } from 'react-icons/hi';
 const mapStateToProps = (state, props) => ({
     visibleCategory: state.view.visibleCategory,
     data: state.data,
-    location: state.view.location
+    location: state.view.location,
+    isPassiveMode: state.settings.isPassiveMode
 });
 
 const mapDispatchToProps = {
@@ -22,7 +23,8 @@ const mapDispatchToProps = {
     changeActiveIndex: viewActions.changeActiveIndex,
     changeLocation: viewActions.changeLocation,
     toggleQueue: settingsActions.toggleQueue,
-    updateData: dataActions.updateData
+    updateData: dataActions.updateData,
+    togglePassiveMode: settingsActions.togglePassiveMode
 }
 
 export class SidebarContentItem extends Component {
@@ -60,6 +62,10 @@ export class SidebarContentItem extends Component {
         this.setState({playlistFormVisible});
     }
 
+    togglePassiveMode = (e) => {
+        this.props.onTogglePassiveMode();
+    }
+
     updateName = (e) => {
         this.setState({newPlaylistName: e.target.value});
     }
@@ -94,13 +100,11 @@ export class SidebarContentItem extends Component {
             classNames += " sidebar-content-active";
         }
         return (
-            <div 
-                id={"sidebar-" + this.props.name} 
-                className={classNames} >
+            <div id={"sidebar-" + this.props.name} className={classNames}>
 
                 <div className="title"><a href="/">Private Player { config.version }</a></div>
 
-                <div className="sidebar-header">    
+                <div className="sidebar-header">
                     <span>{this.props.content}</span>
                     {this.props.name === "playlists" && 
                         <div 
@@ -119,6 +123,11 @@ export class SidebarContentItem extends Component {
                     </ul>
                 </div>
 
+                {/* <label className="switch">
+                    <input type="checkbox" onChange={this.togglePassiveMode} />
+                    <span className="slider">Passive</span>
+                </label> - */}
+
             </div>
         )
     }
@@ -132,6 +141,12 @@ export class SidebarContentBind extends Component {
         this.props.toggleQueue(true);
 
         this.props.changeLocation(`${this.props.location.split('/')[0]}/${encodeURI(index)}`);
+    }
+
+    onTogglePassiveMode = (enabled) => {
+        // console.log('enabled', enabled, MusicPlayerBind);
+        this.props.togglePassiveMode(!this.props.isPassiveMode);
+        // MusicPlayerBind.readCurrentSong();
     }
 
     submitName = (name) => {
@@ -180,7 +195,10 @@ export class SidebarContentBind extends Component {
                     visible={this.props.visibleCategory}
                     data={this.props.data.songs}
                     location={this.props.location}
-                    onActiveIndexChange={this.onActiveIndexChange}/>
+                    onActiveIndexChange={this.onActiveIndexChange}
+                    onTogglePassiveMode={this.onTogglePassiveMode}
+                    isPassiveMode={this.props.isPassiveMode}
+                />
                 <SidebarContentItem
                     name="albums"
                     content="Albums"

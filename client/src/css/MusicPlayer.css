@@ -79,3 +79,30 @@ private_player {
     z-index: 111;
     cursor: pointer;
 }
+
+.switch input {
+    display: none;
+  }
+  
+  .switch  {
+    display: inline-block;
+    width: 60px; /*=w*/
+    height: 30px; /*=h*/
+    margin: 4px;
+    transform: translateY(50%);
+    position: absolute;
+    bottom: 30px;
+    color: white;
+    text-shadow: black 1px;
+    left: 0;
+    bottom: 110px;
+    z-index: 9;
+  }
+  
+  @media not all and (min-resolution:.001dpcm) { 
+      @supports (-webkit-appearance: -apple-pay-button)  {
+          .switch {
+              bottom: 105px;
+          }
+      }
+  }

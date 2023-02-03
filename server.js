@@ -232,16 +232,17 @@ const writeCurrentSong = (req, res) => {
     let form = new formidable.IncomingForm();
     form.parse(req, (err, fields) => {
         // console.log('writeCurrentSong', form, fields);
-        if (fields.name) fs.writeFileSync(currentSongFile, fields.name);
+        if (fields.name) fs.writeFileSync(currentSongFile, JSON.stringify(fields));
         res.end(JSON.stringify({ok: 'ok'}));
     });    
 }
 
 const readCurrentSong = (req, res) => {
-    const name = fs.readFileSync(currentSongFile, { encoding: 'utf8' });
+    const data = fs.readFileSync(currentSongFile, { encoding: 'utf8' });
     const time = fs.statSync(currentSongFile);
-    // console.log('song', name, time);
-    res.end(JSON.stringify({ song: { name, time: time.mtime } }));
+    const out = { ...JSON.parse(data), time: time.mtime };
+    // console.log('out', out);
+    res.end(JSON.stringify(out));
 
     // fs.watchFile(currentSongFile, (curr, prev) => {
     //     console.log(`the current mtime is: ${curr.mtime}`);

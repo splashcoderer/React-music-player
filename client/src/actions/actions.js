@@ -46,7 +46,8 @@ export const settingsActions = createActions(
         TOGGLE_MUTE: (muted, volumeStore) => ({ muted, volumeStore }),
         TOGGLE_QUEUE: queueVisible => ({ queueVisible }),
         TOGGLE_SHUFFLE: shuffleOn => ({ shuffleOn }),
-        TOGGLE_LOOP: loopOn => ({ loopOn })
+        TOGGLE_LOOP: loopOn => ({ loopOn }),
+        TOGGLE_PASSIVE_MODE: isPassiveMode => ({ isPassiveMode })
     }
 )
 

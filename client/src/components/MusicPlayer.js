@@ -7,7 +7,8 @@ import '../css/MusicPlayer.css';
 import {
     playbackActions,
     queueActions,
-    viewActions
+    viewActions,
+    settingsActions
   } from '../actions/actions.js';
 import { getRandomArbitrary } from '../utils';
 import { config } from '../config';
@@ -25,7 +26,8 @@ const mapStateToProps = (state, props) => ({
     queueVisible: state.settings.queue,
     activeCategory: state.view.activeCategory,
     activeIndex: state.view.activeIndex,
-    location: state.view.location
+    location: state.view.location,
+    isPassiveMode: state.settings.isPassiveMode
 });
 
 const mapDispatchToProps = {
@@ -37,18 +39,20 @@ const mapDispatchToProps = {
     setQueue: queueActions.setQueue,
     songPreview: viewActions.songPreview,
     changeLocation: viewActions.changeLocation,
-    showMessage: viewActions.showMessage
+    showMessage: viewActions.showMessage,
+    togglePassiveMode: settingsActions.togglePassiveMode
   }
 
 const secondsToSetSongActive = 300;
 
 const history = createBrowserHistory();
 
-class MusicPlayerBind extends Component {
+export class MusicPlayerBind extends Component {
     constructor(props) {
         super(props);
         this.player = React.createRef();
         this.ref = React.createRef();
+        this.pause = false;
         this.state = {
             currentSong: ''
         }
@@ -58,7 +62,7 @@ class MusicPlayerBind extends Component {
         this.setMediaHandlersForLockedScreen();
 
         this.readCurrentSong();
-        setInterval(() => this.readCurrentSong(), 20000);
+        setInterval(() => this.readCurrentSong(), 15000);
     }
 
     setMediaHandlersForLockedScreen() {
@@ -95,6 +99,23 @@ class MusicPlayerBind extends Component {
         });
     }
 
+    onTogglePassiveMode = () => {
+        this.props.togglePassiveMode(!this.props.isPassiveMode);
+        this.readCurrentSong();
+    }
+
+    playCurrentSong(song) {
+        if (!this.props.queueVisible) {
+            const list = this.props.queue;
+            if (!list.includes(song)) {
+                list.unshift(song);
+                this.props.setQueue(list);
+            }
+        }
+        // console.log('play', song, this.props.queue);
+        this.props.setPlaying(song, 0);
+    }
+
     readCurrentSong = () => {
         fetch(config.baseUrl + '/readCurrentSong', {
             method: 'GET'
@@ -103,34 +124,54 @@ class MusicPlayerBind extends Component {
         .catch(error => console.error('Error:', error))
         .then(response => {
             if (response) {
-                response.song.range = getDateRange(response.song.time);
-                // console.log('readCurrentSong', response);
-                this.setState({ currentSong: response.song });
-                if (navigator.mediaSession.metadata) navigator.mediaSession.metadata.album = response.song.name;
+                // console.log('readCurrentSong', response, this.props, this.props.queue);
+                response.range = getDateRange(response.time);
+
+                if (this.props.isPassiveMode && !this.pause) {
+                    this.props.changeLocation(`${response.category}/${response.folder}`);
+                    this.playCurrentSong(response.id);
+                    this.playAfterClick();
+                }
+
+                this.setState({ currentSong: { name: response.name }});
+                if (navigator.mediaSession.metadata) navigator.mediaSession.metadata.album = response.name;
             }
         });
     }
 
+    onPlayerPause = () => {
+        this.pause = true;
+    }
+
     onPlayerPlay = () => {
+        this.pause = false;
         this.props.songPreview(false);
 
         let musicItem = this.props.data.all && this.props.data.all[this.props.nowPlaying.item];
         if (musicItem) musicItem = musicItem.path.split('/')[2].replace('.mp3', '');
 
         document.title = musicItem + ' | pplayer.ru';
+        // console.log(this.props.nowPlaying, this.props.data[this.props.activeCategory][this.props.activeIndex]);
 
-        fetch(config.baseUrl + '/writeCurrentSong', {
-            method: 'POST',
-            headers:{ 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: musicItem })
-        })
-        .then(res => res.json())
-        .catch(error => console.error('Error:', error))
-        .then(response => {
-            this.setState({ currentSong: { name: musicItem } });
-        });
-        // .then(response => { console.log('response', response); });
-        // console.log('musicItem', musicItem, this.props.nowPlaying, this.props.data);
+        if (!this.props.isPassiveMode) {
+            fetch(config.baseUrl + '/writeCurrentSong', {
+                method: 'POST',
+                headers:{ 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    category: this.props.activeCategory,
+                    folder: this.props.activeIndex,
+                    name: musicItem,
+                    id: this.props.nowPlaying.item
+                })
+            })
+            .then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+                this.setState({ currentSong: { name: musicItem } });
+            });
+            // .then(response => { console.log('response', response); });
+            // console.log('musicItem', musicItem, this.props.nowPlaying, this.props.data);
+        }
 
         // this.props.changeLocation(`/${this.props.location.split('/')[0]}/${this.props.location.split('/')[1]}/${encodeURI(this.props.data.all[this.props.nowPlaying.item].url)}`);
         if (this.props.nowPlaying.item) {
@@ -199,8 +240,9 @@ class MusicPlayerBind extends Component {
             nextSongIndex = playingArray.length - 1;
             this.props.showMessage({ text: 'Enable Loop', error: true });
         }
-        // console.log(nextSongIndex, index, playingArray.length);
 
+        // console.log('nextSong', nextSongIndex, index, playingArray[nextSongIndex], playingArray);
+        // console.log('playingArray', playingArray[nextSongIndex], nextSongIndex);
         this.props.setPlaying(playingArray[nextSongIndex], nextSongIndex);
         // if (!this.props.shuffle && !this.props.loop && index === playingArray.length - 1) {
         //     this.props.endPlayback();
@@ -210,7 +252,7 @@ class MusicPlayerBind extends Component {
         // }
     }
 
-    onPreviewPlayButtonClick = () => {
+    playAfterClick = () => {
         // console.log(this.player.current.audio.current);
         this.player.current.audio.current.play();
     }
@@ -229,17 +271,25 @@ class MusicPlayerBind extends Component {
             className={ ("audio_player" + (this.props.nowPlaying.item > '' ? ' playing' : ''))}>
             {/* <MainContent /> */}
             <div className='preview_play_button'>
-                <MdPlayCircleOutline size={160} onClick={ this.onPreviewPlayButtonClick } />
+                <MdPlayCircleOutline size={160} onClick={ this.playAfterClick } />
             </div>
+
             <div className='current_song'>
                 <GiMusicSpell className={ this.state.currentSong.range > secondsToSetSongActive ? '' : 'spinner'} /> { this.state.currentSong.name }
             </div>
+
+            <label className="switch">
+                <input type="checkbox" onChange={this.onTogglePassiveMode} />
+                <span className="slider">Passive</span>
+            </label>
+
             <AudioPlayer
                 ref={this.player}
                 autoPlay
                 src={window.location.origin + "/music" + musicPath}
                 preload='metadata'
                 onPlay={this.onPlayerPlay}
+                onPause={this.onPlayerPause}
                 onPlaying={e => this.props.setDuration(e.timeStamp)}
                 onListen={e => this.props.updateTime(e.timeStamp)}
                 onClickNext={this.onClickNext}
