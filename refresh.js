@@ -1,13 +1,15 @@
 const parseSongs  = require('./parse.js').parseSongs;
 const fs = require('fs');
 
-if (fs.existsSync("./client/public/music")){
-    if (!fs.existsSync("./client/public/covers")){
-        fs.mkdirSync("./client/public/covers");
+const webSiteDir = './client/build';
+
+if (fs.existsSync(webSiteDir + "/music")){
+    if (!fs.existsSync(webSiteDir + "/covers")){
+        fs.mkdirSync(webSiteDir + "/covers");
     }
-    parseSongs("./client/public/music/", (err, result) => {
+    parseSongs(webSiteDir + "/music/", (err, result) => {
         if(err) throw err;
-        fs.writeFile("music_library.json", JSON.stringify(result, null, '  '), "utf8", callback=>{return});
+        fs.writeFile("music", JSON.stringify(result, null, '  '), "utf8", callback=>{return});
     });
     console.log("Finished");
 } else {

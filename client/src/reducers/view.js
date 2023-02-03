@@ -12,9 +12,17 @@ const view = handleActions(
             visibleCategory: action.payload.category
         }),
 
-        CHANGE_ACTIVE_INDEX: (state, action) => ({
+        CHANGE_ACTIVE_INDEX: (state, action) => {
+            // console.log('CHANGE_ACTIVE_INDEX', state, action);
+            return ({
+                ...state,
+                activeIndex: action.payload.index
+            })
+        },
+
+        CHANGE_LOCATION: (state, action) => ({
             ...state,
-            activeIndex: action.payload.index
+            location: action.payload.location
         }),
 
         TOGGLE_PLAYLIST_SELECT_VISIBLE: (state, action) => ({
@@ -28,9 +36,29 @@ const view = handleActions(
             activeIndex: undefined
         }),
 
-        TOGGLE_SUCCESS_MODAL: (state, action) => ({
+        SHOW_MESSAGE: (state, action) => ({
             ...state,
-            successModal: !action.payload.visible
+            messageConfig: action.payload.messageConfig
+        }),
+
+        CLOSE_MODAL_MESSAGE: (state, action) => ({
+            ...state,
+            messageConfig: { text: '' }
+        }),
+
+        TOGGLE_MODAL_MESSAGE: (state, action) => ({
+            ...state,
+            modalVisible: !action.payload.visible
+        }),
+
+        SHOW_PRELOADER: (state, action) => ({
+            ...state,
+            isPreloaderVisible: action.payload.isPreloaderVisible
+        }),
+
+        SONG_PREVIEW: (state, action) => ({
+            ...state,
+            isPreviewVisible: action.payload.isPreviewVisible
         })
 
     },
@@ -39,7 +67,10 @@ const view = handleActions(
         visibleCategory: 'songs',
         activeIndex: undefined,
         playlistSelect: false,
-        successModal: false    }
+        messageConfig: {},
+        modalVisible: false,
+        location: '/'
+    }
 )
 
 export { view as default }

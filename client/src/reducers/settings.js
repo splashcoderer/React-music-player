@@ -31,7 +31,12 @@ const settings = handleActions(
         TOGGLE_LOOP: (state, action) => ({
             ...state,
             loop: !action.payload.loopOn
-        })
+        }),
+
+        TOGGLE_PASSIVE_MODE: (state, action) => ({
+            ...state,
+            isPassiveMode: action.payload.isPassiveMode
+        }),
     },
     {
         queue: false,
@@ -39,7 +44,8 @@ const settings = handleActions(
         shuffle: false,
         muted: false,
         volumeStore: 100,
-        volume: 100
+        volume: 100,
+        isPassiveMode: false
     }
 )
 

@@ -18,14 +18,23 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
     togglePlaylistSelect: viewActions.togglePlaylistSelectVisible,
     updateData: dataActions.updateData,
-    toggleSuccessModal: viewActions.toggleSuccessModal
+    showMessage: viewActions.showMessage
 }
 
 export class PlaylistSelectBind extends Component {
 
     addToPlaylist = (e) => {
-        let playlist = e.target.innerHTML;
-        let songs = this.props.hold;
+        const playlist = e.target.innerHTML;
+        const songs = this.props.hold;
+        const intersection = this.props.data.playlists[playlist].filter(num => songs.includes(num));
+        // console.log(intersection);
+        if (intersection.length) {
+            this.props.togglePlaylistSelect(true);
+            this.props.showMessage({ text: 'Already in playlist', error: true });
+            return;
+        }
+        // this.props.showMessage({ text: 'Added' });return;
+
         fetch(config.baseUrl + '/addToPlaylist', {
             method: 'POST',
             body: JSON.stringify({
@@ -40,20 +49,17 @@ export class PlaylistSelectBind extends Component {
         .then(response => {
             this.props.updateData(response);
             this.props.togglePlaylistSelect(true);
-            this.props.toggleSuccessModal(false);
-            setTimeout(() => {
-                this.props.toggleSuccessModal(true);
-            },2000);
+            this.props.showMessage({ text: 'Added' });
         });
     }
 
     renderPlaylists = () => {
         let playlists = Object.keys(this.props.data.playlists);
         let items = playlists.map(playlist => 
-            <li
-                key={playlist}
+            <li key={playlist}
                 onClick={this.addToPlaylist}>
-                {playlist}</li>
+                    {playlist}
+            </li>
         );
         return items;
     }

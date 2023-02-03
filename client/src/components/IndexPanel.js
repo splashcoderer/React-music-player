@@ -8,7 +8,9 @@ import {
     viewActions
 } from '../actions/actions.js';
 import { shuffle } from '../tools.js';
-import { MdCheck } from 'react-icons/md';
+import { MdCheck, MdPlayArrow, MdDriveFileRenameOutline } from 'react-icons/md';
+import { IoMdTrash } from 'react-icons/io';
+import { config } from '../config.js';
 
 const mapStateToProps = (state, props) => ({
     activeIndex: state.view.activeIndex,
@@ -77,9 +79,9 @@ export class IndexPanelBind extends Component {
         this.props.addToUpnext(list, this.props.activeSong);
     }
 
-    removePlaylist = () => {
-        if(this.props.activeIndex === undefined) return;
-        fetch('/deletePlaylist', {
+    deletePlaylist = () => {
+        if (!this.props.activeIndex) return;
+        fetch(config.baseUrl + '/deletePlaylist', {
             method: 'POST',
             body: JSON.stringify({
                 playlist: this.props.activeIndex
@@ -87,7 +89,8 @@ export class IndexPanelBind extends Component {
             headers:{
                 'Content-Type': 'application/json'
             }
-        }).then(res => res.json())
+        })
+        .then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(response => {
             // let index = Object.keys(this.props.data.songs)[0];
@@ -132,19 +135,20 @@ export class IndexPanelBind extends Component {
             return(
                 <div className="panel-controls">
                     {
-                        (this.props.activeCategory === "playlists") &&
+                        // TODO add param to allow delete/rename for you only
+                        (false && this.props.activeCategory === "playlists") &&
                             <div className="playlist-controls">
                                 <div 
                                     id="panel-delete" 
                                     className="panel-control panel-option playlist-option"
-                                    onClick={this.removePlaylist}>
-                                    DELETE
+                                    onClick={this.deletePlaylist}>
+                                    <IoMdTrash size={25} />
                                 </div>
                                 <div 
                                     id="panel-rename" 
                                     className="panel-control panel-option playlist-option"
                                     onClick={this.handleRename}>
-                                    {this.state.renameTextVisible ? "SUBMIT" : "RENAME"}
+                                    {this.state.renameTextVisible ? "SUBMIT" : <MdDriveFileRenameOutline size={25} /> }
                                 </div>
                             </div>
                     }
@@ -152,13 +156,13 @@ export class IndexPanelBind extends Component {
                         id="panel-addtoplaylist" 
                         className="panel-control panel-option"
                         onClick={this.addToPlaylist} >
-                        ADD TO PLAYLIST
+                        TO PLAYLIST
                     </div>
                     <div 
                         id="panel-addtoqueue" 
                         className="panel-control panel-option"
                         onClick={this.addToQueue} >
-                        ADD TO QUEUE
+                        TO QUEUE
                     </div>
                     <div 
                         id="panel-playnext" 
@@ -170,7 +174,8 @@ export class IndexPanelBind extends Component {
                         className="panel-control"
                         onClick={this.play}>
                         <span className="panel-play">
-                            PLAY
+                            {/* PLAY */}
+                            <MdPlayArrow></MdPlayArrow>
                         </span>
                     </div>
                 </div>

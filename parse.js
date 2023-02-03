@@ -5,6 +5,8 @@ const sh = require("shorthash");
 const mm = require("music-metadata");
 // const util = require("util");
 
+const webSiteDir = 'client/build';
+
 function translit(word){
 	var answer = '';
 	var converter = {
@@ -90,6 +92,7 @@ const parseSongs = (dir, done) => {
                             .then(function (metadata) {
 
                                 let tags = metadata.common;
+                                // console.log('tags ', tags);
 
                                 let entry = {};
                                 
@@ -101,7 +104,11 @@ const parseSongs = (dir, done) => {
                                     entry.title = tags.title;
                                 }
 
-                                newFileName = fileName + ext;;
+                                entry.year = tags.year || '';
+
+                                entry.url = translit(fileName).replace(/ /g, '_').replace(/[^a-zA-Z0-9_]/g,'_').toLowerCase();
+
+                                newFileName = fileName + ext;
                                 // let newFileName = translit(fileName);
                                 // newFileName = newFileName.replace(/\s+/g,'-') + ext;
                                 // newFileName = fileName.replace(/[^a-zA-Z0-9\-.]/g,'-') + ext;
@@ -114,8 +121,8 @@ const parseSongs = (dir, done) => {
                                     coverName = coverName.replace(/\s+/g,'-');
                                     coverName = translit(coverName);//coverName.replace(/[^a-zA-Z0-9\-.]/g,'-');
                                     let coverExt = tags.picture[0].format;
-                                    let fileName = "/" + coverName + "." + coverExt;//"\\" + coverName + "." + coverExt;
-                                    let coverPath = "client/public/covers" + fileName;// "client\\public\\covers" + fileName;
+                                    let fileName = "/" + coverName + "." + coverExt;
+                                    let coverPath = webSiteDir + "/covers" + fileName;
                                     fs.writeFile(
                                         coverPath, 
                                         binaryData, 
@@ -129,14 +136,18 @@ const parseSongs = (dir, done) => {
                                 }
 
                                 let musicPath = path.relative(process.cwd(), dir + "/" + newFileName);
-                                musicPath = musicPath.split('client/public/music')[1];
+                                musicPath = musicPath.split(webSiteDir + '/music')[1];
                                 entry.path = musicPath; //path.relative(process.cwd(), dir + "/" + newFileName);
                                     
-                                entry.artist = (tags.artist === undefined) ? "None" : tags.artist;
-                                entry.album = (tags.album === undefined) ? "None" : tags.album;
+                                entry.artist = (tags.artist === undefined) ? "" : tags.artist;
+                                entry.album = (tags.album === undefined) ? "" : tags.album;
                                 entry.genre = (tags.genre === undefined) ? [] : tags.genre;
 
-                                const id = sh.unique(musicPath) // Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
+                                chordsFileName = dir + '/' + newFileName.replace('.mp3', '.chords.txt');
+                                entry.chords = fs.existsSync(chordsFileName) ? fs.readFileSync(chordsFileName, {encoding:'utf8', flag:'r'}) : '';
+                                // if (fs.existsSync(chordsFileName)) console.log('readFileSync', fs.readFileSync(chordsFileName, {encoding:'utf8', flag:'r'}));
+
+                                const id = entry.url; // sh.unique(musicPath) // Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
                                 results["all"][id] = entry;
 
                                 if(results["songs"][parent] === undefined)

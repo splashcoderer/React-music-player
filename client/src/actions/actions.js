@@ -36,7 +36,7 @@ export const dataActions = createActions(
 export const playlistActions = createActions(
     {
         ADD_TO_PLAYLIST: (name, songs) => ({ name, songs }),
-        REMOVE_FROM_PLAYLIST: (name, index) => ({ name, index })
+        REMOVE_FROM_PLAYLIST: (name, index, props) => ({ name, index, props })
     }
 )
 
@@ -46,7 +46,8 @@ export const settingsActions = createActions(
         TOGGLE_MUTE: (muted, volumeStore) => ({ muted, volumeStore }),
         TOGGLE_QUEUE: queueVisible => ({ queueVisible }),
         TOGGLE_SHUFFLE: shuffleOn => ({ shuffleOn }),
-        TOGGLE_LOOP: loopOn => ({ loopOn })
+        TOGGLE_LOOP: loopOn => ({ loopOn }),
+        TOGGLE_PASSIVE_MODE: isPassiveMode => ({ isPassiveMode })
     }
 )
 
@@ -55,8 +56,13 @@ export const viewActions = createActions(
         CHANGE_ACTIVE_CATEGORY: category => ({ category }),
         CHANGE_VISIBLE_CATEGORY: category => ({ category }),
         CHANGE_ACTIVE_INDEX: index => ({ index }),
+        CHANGE_LOCATION: location => ({ location }),
         TOGGLE_PLAYLIST_SELECT_VISIBLE: visible => ({ visible }),
-        TOGGLE_SUCCESS_MODAL: visible => ({ visible })
+        SHOW_MESSAGE:  messageConfig => ({ messageConfig }),
+        CLOSE_MODAL_MESSAGE:  messageConfig => ({ messageConfig }),
+        TOGGLE_MODAL_MESSAGE: visible => ({ visible }),
+        SHOW_PRELOADER: isPreloaderVisible => ({ isPreloaderVisible }),
+        SONG_PREVIEW: isPreviewVisible => ({ isPreviewVisible })
     },
     'RESET_VIEW'
 )

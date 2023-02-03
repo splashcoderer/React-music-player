@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
+
 import { decode } from '../tools.js';
 import {
     viewActions,
@@ -7,17 +9,22 @@ import {
     dataActions
 } from '../actions/actions.js';
 import { config } from '../config';
+import { HiPlus, HiMinus } from 'react-icons/hi';
 
 const mapStateToProps = (state, props) => ({
     visibleCategory: state.view.visibleCategory,
-    data: state.data
+    data: state.data,
+    location: state.view.location,
+    isPassiveMode: state.settings.isPassiveMode
 });
 
 const mapDispatchToProps = {
     changeActiveCategory: viewActions.changeActiveCategory,
     changeActiveIndex: viewActions.changeActiveIndex,
+    changeLocation: viewActions.changeLocation,
     toggleQueue: settingsActions.toggleQueue,
-    updateData: dataActions.updateData
+    updateData: dataActions.updateData,
+    togglePassiveMode: settingsActions.togglePassiveMode
 }
 
 export class SidebarContentItem extends Component {
@@ -31,16 +38,21 @@ export class SidebarContentItem extends Component {
     }
 
     changeActiveIndex = (e) => {
-        let index = e.target.innerHTML;
-        this.props.onActiveIndexChange(index);
+        this.props.onActiveIndexChange(typeof e === 'string' ? e : e.target.innerHTML);
     }
 
     listItems = (category) => {
+        if (!category) return;
         let keys = Object.keys(category);
-        if(!keys.length) return;
+        if (!keys.length) return;
+        keys.sort();
+        const url = this.props.location.split('/');
+        // console.log(url);
         return (
-            keys.map(item => 
-                <li key={item} onClick={this.changeActiveIndex}>{item}</li>
+            keys.map(item =>
+                <Link key={item} to={`/${url[0]}/${encodeURI(item)}`}>
+                    <li key={item} onClick={this.changeActiveIndex} className={url[1] === encodeURI(item) ? 'active' : ''}>{item}</li>
+                </Link>
             )
         )
     }
@@ -48,6 +60,10 @@ export class SidebarContentItem extends Component {
     toggleFormVisble = () => {
         let playlistFormVisible = !this.state.playlistFormVisible;
         this.setState({playlistFormVisible});
+    }
+
+    togglePassiveMode = (e) => {
+        this.props.onTogglePassiveMode();
     }
 
     updateName = (e) => {
@@ -58,6 +74,7 @@ export class SidebarContentItem extends Component {
         if(!this.state.newPlaylistName) return;
         this.props.submitName(this.state.newPlaylistName);
         this.form.value = "";
+        this.toggleFormVisble();
     }
 
     renderForm = () => {
@@ -83,17 +100,17 @@ export class SidebarContentItem extends Component {
             classNames += " sidebar-content-active";
         }
         return (
-            <div 
-                id={"sidebar-" + this.props.name} 
-                className={classNames} >
+            <div id={"sidebar-" + this.props.name} className={classNames}>
 
-                <div className="sidebar-header">    
+                <div className="title"><a href="/">Private Player { config.version }</a></div>
+
+                <div className="sidebar-header">
                     <span>{this.props.content}</span>
                     {this.props.name === "playlists" && 
                         <div 
                             className="new-playlist-toggle"
                             onClick={this.toggleFormVisble}>
-                            { this.state.playlistFormVisible ? "HIDE" : "NEW" }
+                            { this.state.playlistFormVisible ? <HiMinus /> : <HiPlus /> }
                         </div>
                     }
                 </div>
@@ -106,6 +123,11 @@ export class SidebarContentItem extends Component {
                     </ul>
                 </div>
 
+                {/* <label className="switch">
+                    <input type="checkbox" onChange={this.togglePassiveMode} />
+                    <span className="slider">Passive</span>
+                </label> - */}
+
             </div>
         )
     }
@@ -117,6 +139,14 @@ export class SidebarContentBind extends Component {
         this.props.changeActiveIndex(decode(index));
         this.props.changeActiveCategory(this.props.visibleCategory);
         this.props.toggleQueue(true);
+
+        this.props.changeLocation(`${this.props.location.split('/')[0]}/${encodeURI(index)}`);
+    }
+
+    onTogglePassiveMode = (enabled) => {
+        // console.log('enabled', enabled, MusicPlayerBind);
+        this.props.togglePassiveMode(!this.props.isPassiveMode);
+        // MusicPlayerBind.readCurrentSong();
     }
 
     submitName = (name) => {
@@ -132,7 +162,7 @@ export class SidebarContentBind extends Component {
             }
         }).then(res => res.json())
         .catch(error => console.error('Error:', error))
-        .then(response => { 
+        .then(response => {
             this.props.updateData(response)
         });
     }
@@ -141,37 +171,64 @@ export class SidebarContentBind extends Component {
         return (
             <div className="sidebar-content-outer">
                 <div className="sidebar-background"></div>
+                {/* <Routes>
+                    <Route path='/' element={
+                        <SidebarContentItem
+                            name="songs"
+                            content="Folders"
+                            visible={this.props.visibleCategory}
+                            data={this.props.data.songs}
+                            onActiveIndexChange={this.onActiveIndexChange}/>}>
+                    </Route> 
+                    <Route path='/albums' element={
+                        <SidebarContentItem
+                            name="albums"
+                            content="Albums"
+                            visible={this.props.visibleCategory}
+                            data={this.props.data.albums}
+                            onActiveIndexChange={this.onActiveIndexChange}/>}>
+                    </Route>
+                </Routes> */}
                 <SidebarContentItem
                     name="songs"
-                    content="Tracks"
+                    content="Folders"
                     visible={this.props.visibleCategory}
                     data={this.props.data.songs}
-                    onActiveIndexChange={this.onActiveIndexChange}/>
+                    location={this.props.location}
+                    onActiveIndexChange={this.onActiveIndexChange}
+                    onTogglePassiveMode={this.onTogglePassiveMode}
+                    isPassiveMode={this.props.isPassiveMode}
+                />
                 <SidebarContentItem
                     name="albums"
                     content="Albums"
                     visible={this.props.visibleCategory}
                     data={this.props.data.albums}
+                    location={this.props.location}
                     onActiveIndexChange={this.onActiveIndexChange}/>
                 <SidebarContentItem
                     name="artists"
                     content="Artists"
                     visible={this.props.visibleCategory}
-                    data={this.props.data.artists} 
+                    data={this.props.data.artists}
+                    location={this.props.location}
+                    onActiveIndexChange={this.onActiveIndexChange}/>
+                <SidebarContentItem
+                    name="genres"
+                    content="Genres"
+                    visible={this.props.visibleCategory}
+                    data={this.props.data.genres}
+                    location={this.props.location}
                     onActiveIndexChange={this.onActiveIndexChange}/>
                 <SidebarContentItem
                     name="playlists"
                     content="Playlists"
                     visible={this.props.visibleCategory}
-                    data={this.props.data.playlists} 
+                    data={this.props.data.playlists}
+                    location={this.props.location}
                     onActiveIndexChange={this.onActiveIndexChange}
                     submitName={this.submitName}/>
-                <SidebarContentItem
-                    name="genres"
-                    content="Genres"
-                    visible={this.props.visibleCategory}
-                    data={this.props.data.genres} 
-                    onActiveIndexChange={this.onActiveIndexChange}/>   
+                
             </div>
         )
     }

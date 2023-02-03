@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import {
+  viewActions
+} from '../actions/actions.js';
+
 import NavBar from './NavBar.js';
 import MusicItem from './MusicItem.js';
 import IndexPanel from './IndexPanel.js';
@@ -12,21 +16,25 @@ const mapStateToProps = (state, props) => ({
   queue: state.queue,
   data: state.data,
   activeIndex: state.view.activeIndex,
-  activeCategory: state.view.activeCategory
+  activeCategory: state.view.activeCategory,
+  location: state.view.location
 })
 
+const mapDispatchToProps = {
+  changeLocation: viewActions.changeLocation,
+}
+
 export class CenterBind extends Component {
-  
-  componentDidUpdate(){
-  }
 
   render() {
     let list = [];
-    if(this.props.activeIndex) {
+    if (this.props.activeIndex) {
       list = this.props.queueVisible ?
-      this.props.queue :
-      this.props.data[this.props.activeCategory][this.props.activeIndex];
+        this.props.queue :
+        this.props.data[this.props.activeCategory] && this.props.data[this.props.activeCategory][this.props.activeIndex];
     }
+    if (list && !this.props.queueVisible && this.props.activeCategory !== 'playlists') list.sort();
+
     return (
       <div className="view-outer">
         <div 
@@ -42,7 +50,7 @@ export class CenterBind extends Component {
               <IndexPanel />
               <div className="music-list" ref={scroll => this.scroll = scroll}>
                 {
-                  list.map((item, index) =>
+                  list && list.map((item, index) =>
                     <MusicItem
                       key={index}
                       id={item}
@@ -59,7 +67,8 @@ export class CenterBind extends Component {
 }
 
 const Center = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(CenterBind);
 
 export { Center as default }
